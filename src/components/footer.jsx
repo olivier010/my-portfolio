@@ -59,7 +59,7 @@ const Footer = () => {
                     ))}
                 </div>
                 <div className="text-sm">
-                    &copy; {new Date().getFullYear()} Yves Olivier Nsengiyumva. All rights reserved.
+                    &copy; {new Date().getFullYear()} Yves Olivier. All rights reserved.
                 </div>
             </div>
         </footer>
