@@ -2,47 +2,55 @@ import React, { useState, useEffect } from "react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
 const projects = [
-    // ...your project data
     {
         title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.",
-        image: "https://via.placeholder.com/150",
+        description: "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        image: "/imgs.jpg",
         github: "https://github.com/yourusername/portfolio",
+        live: "https://yourportfolio.com",
+    },
+    {
+        title: "E-commerce Store",
+        description: "An online store built with React, Firebase, Tailwind CSS, and has a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
+        image: "/imgs.jpg",
+        github: "https://github.com/yourusername/ecommerce",
+        live: "https://yourecommerce.com",
     },
     {
         title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.",
-        image: "https://via.placeholder.com/150",
+        description: "A personal portfolio website built with React and Tailwind CSS.a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
+        image: "/imgs.jpg",
         github: "https://github.com/yourusername/portfolio",
+        live: "https://yourecommerce.com",
     },
     {
         title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.",
-        image: "https://via.placeholder.com/150",
+        description: "A personal portfolio website built with React and Tailwind CSS.a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
+        image: "/imgs.jpg",
         github: "https://github.com/yourusername/portfolio",
-    },
-    {
-        title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.",
-        image: "https://via.placeholder.com/150",
-        github: "https://github.com/yourusername/portfolio",
+        live: "https://yourecommerce.com",
     },
 ];
 
+const MAX_LENGTH = 100;
+
 const Project = () => {
     const [current, setCurrent] = useState(0);
-    const [visibleCount, setVisibleCount] = useState(3); // Default
+    const [visibleCount, setVisibleCount] = useState(3);
+    const [expanded, setExpanded] = useState({});
+    const [isHovered, setIsHovered] = useState(false);
+
 
     const total = projects.length;
 
     const updateVisibleCount = () => {
         const width = window.innerWidth;
         if (width < 768) {
-            setVisibleCount(1); // small screen
+            setVisibleCount(1);
         } else if (width < 1024) {
-            setVisibleCount(2); // medium
+            setVisibleCount(2);
         } else {
-            setVisibleCount(3); // large
+            setVisibleCount(3);
         }
     };
 
@@ -51,6 +59,25 @@ const Project = () => {
         window.addEventListener("resize", updateVisibleCount);
         return () => window.removeEventListener("resize", updateVisibleCount);
     }, []);
+
+    useEffect(() => {
+        if (current > total - visibleCount) {
+            setCurrent(0);
+        }
+    }, [visibleCount, total]);
+
+    useEffect(() => {
+    if (isHovered) return; // Do not slide if hovering
+
+    const interval = setInterval(() => {
+        setCurrent((prev) =>
+            prev + 1 < total - visibleCount + 1 ? prev + 1 : 0
+        );
+    }, 5000);
+
+    return () => clearInterval(interval);
+}, [visibleCount, total, isHovered]);
+
 
     const nextSlide = () => {
         setCurrent((prev) =>
@@ -64,10 +91,12 @@ const Project = () => {
         );
     };
 
-    useEffect(() => {
-        const interval = setInterval(nextSlide, 5000);
-        return () => clearInterval(interval);
-    }, [current, visibleCount]);
+    const toggleReadMore = (idx) => {
+        setExpanded((prev) => ({
+            ...prev,
+            [idx]: !prev[idx],
+        }));
+    };
 
     return (
         <section id="projects" className="py-12 bg-gray-50 dark:bg-gray-800">
@@ -75,58 +104,92 @@ const Project = () => {
                 <h2 className="text-3xl font-bold text-blue-600 dark:text-white mb-8 text-center">
                     Projects
                 </h2>
-                <div className="relative">
+                <div
+                   className="relative"
+                   onMouseEnter={() => setIsHovered(true)}
+                   onMouseLeave={() => setIsHovered(false)}
+                >
+
                     <div className="overflow-hidden">
                         <div
-                            className="flex transition-transform duration-700"
+                            className="flex transition-transform duration-700 ease-in-out"
                             style={{
                                 transform: `translateX(-${current * (100 / visibleCount)}%)`,
                             }}
                         >
-                            {projects.map((project, idx) => (
-                                <div
-                                    key={idx}
-                                    className="px-2"
-                                    style={{ flex: `0 0 ${100 / visibleCount}%` }}
-                                >
-                                    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 flex flex-col items-center">
-                                        <img
-                                            src={project.image}
-                                            alt={project.title}
-                                            className="w-32 h-32 object-cover rounded mb-4"
-                                        />
-                                        <h3 className="text-xl font-semibold text-blue-600 dark:text-white mb-2">
-                                            {project.title}
-                                        </h3>
-                                        <p className="text-gray-700 dark:text-gray-300 text-center mb-4">
-                                            {project.description}
-                                        </p>
-                                        <a
-                                            href={project.github}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 transition"
-                                        >
-                                            <GitHubIcon fontSize="medium" />
-                                            <span className="hidden md:inline">Code</span>
-                                        </a>
+                            {projects.map((project, idx) => {
+                                const isLong = project.description.length > MAX_LENGTH;
+                                const isExpanded = expanded[idx];
+                                const displayedText = isExpanded || !isLong
+                                    ? project.description
+                                    : project.description.slice(0, MAX_LENGTH) + "...";
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        className="px-2"
+                                        style={{ flex: `0 0 ${100 / visibleCount}%` }}
+                                    >
+                                        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 flex flex-col items-center h-full">
+                                            <img
+                                                src={project.image}
+                                                alt={project.title}
+                                                className="w-full h-40 object-cover rounded mb-4"
+                                            />
+                                            <h3 className="text-xl font-semibold text-blue-600 dark:text-white mb-2 text-center">
+                                                {project.title}
+                                            </h3>
+                                            <div className="text-center mb-4 min-h-[100px] flex flex-col justify-between">
+                                                <p className="text-gray-700 dark:text-gray-300">
+                                                    {displayedText}
+                                                </p>
+                                                {isLong && (
+                                                    <button
+                                                        onClick={() => toggleReadMore(idx)}
+                                                        className="text-sm text-blue-600 hover:underline mt-2"
+                                                    >
+                                                        {isExpanded ? "Show less" : "Read more"}
+                                                    </button>
+                                                )}
+                                            </div>
+                                            {project.live && (
+                                                <a
+                                                    href={project.live}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="mb-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-800 transition"
+                                                >
+                                                    View Project
+                                                </a>
+                                            )}
+                                            <a
+                                                href={project.github}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 transition"
+                                            >
+                                                <GitHubIcon fontSize="medium" />
+                                                <span className="hidden md:inline">Code</span>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
-                    {/* Controls */}
                     {total > visibleCount && (
                         <>
                             <button
                                 onClick={prevSlide}
+                                aria-label="Previous project"
                                 className="absolute left-0 top-1/2 -translate-y-1/2 bg-blue-600 text-white rounded-full p-2 z-10 hover:bg-blue-800 transition"
                             >
                                 &#8592;
                             </button>
                             <button
                                 onClick={nextSlide}
+                                aria-label="Next project"
                                 className="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-600 text-white rounded-full p-2 z-10 hover:bg-blue-800 transition"
                             >
                                 &#8594;
