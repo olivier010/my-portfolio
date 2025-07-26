@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
+
 
 function Contact() {
     const form = useRef();

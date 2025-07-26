@@ -4,24 +4,17 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 const projects = [
     {
         title: "Portfolio Website",
-        description: "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        image: "/imgs.jpg",
-        github: "https://github.com/yourusername/portfolio",
-        live: "https://yourportfolio.com",
-    },
-    {
-        title: "E-commerce Store",
-        description: "An online store built with React, Firebase, Tailwind CSS, and has a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
-        image: "/imgs.jpg",
-        github: "https://github.com/yourusername/ecommerce",
-        live: "https://yourecommerce.com",
+        description: "An Online Ticket Reservation System is a web-based or mobile application that allows users to book and purchase tickets for various events or services over the internet.",
+        image: "/online.jpeg",
+        github: "https://github.com/olivier010/online-ticket-reservation-sy",
+        live: "#",
     },
     {
         title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
-        image: "/imgs.jpg",
-        github: "https://github.com/yourusername/portfolio",
-        live: "https://yourecommerce.com",
+        description: "An Online Portfolio is a personal website or web application that showcases an individual’s skills, projects, achievements, and professional background",
+        image: "/portfolio.jpeg",
+        github: "https://github.com/olivier010/my-portfolio",
+        live: "yvesonlineportfolio.netlify.app",
     },
     {
         title: "Portfolio Website",

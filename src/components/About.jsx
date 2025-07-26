@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const About = () => {
     // Example paragraphs (replace with your actual long text if needed)
-    const educationText = `BSc in Computer Science (2021-2024) at RP Karongi College. I learned a wide range of computer science topics, including software engineering, web development, and data structures. My experience included hands-on projects, teamwork, and leadership in tech clubs. I am passionate about building scalable web applications and always eager to learn new technologies.`;
-    const skillsText = `React.js, JavaScript, Tailwind CSS, GitHub, Firebase, Responsive Design, Node.js, Express, MongoDB, REST APIs, Agile Methodologies, and more. I have experience working on both frontend and backend projects, collaborating with teams, and deploying applications to production environments.`;
+    const educationText = `I am currently student in Information Technology at Rwanda Polytechnic Karongi College, where I am honing my skills in Information Technology. My coursework includes a variety of subjects such as programming, database management, web development, and system analysis. I am passionate about learning new technologies and applying them to real-world problems.`;
+    const skillsText = `React.js, JavaScript, Tailwind CSS, GitHub, Responsive Design, and more. I have experience working on frontend projects, collaborating with teams, and deploying applications to production environments.`;
 
     // Utility to trim text and show Read More
     function useReadMore(text, limit = 100) {
