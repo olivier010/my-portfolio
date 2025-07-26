@@ -15,7 +15,14 @@ const projects = [
         image: "/portfolio.jpeg",
         github: "https://github.com/olivier010/my-portfolio",
         live: "yvesonlineportfolio.netlify.app",
-    },git 
+    },
+    {
+        title: "Portfolio Website",
+        description: "An Online Portfolio that showcases an individual’s skills, projects, achievements, and professional background",
+        image: "/portfolio.jpeg",
+        github: "https://github.com/olivier010/my-portfolio",
+        live: "yvesonlineportfolio.netlify.app",
+    },
 ];
 
 const MAX_LENGTH = 100;
