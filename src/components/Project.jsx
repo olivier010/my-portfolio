@@ -15,14 +15,7 @@ const projects = [
         image: "/portfolio.jpeg",
         github: "https://github.com/olivier010/my-portfolio",
         live: "yvesonlineportfolio.netlify.app",
-    },
-    {
-        title: "Portfolio Website",
-        description: "A personal portfolio website built with React and Tailwind CSS.a fully functional cart system with Stripe integration and admin dashboard to manage products and orders.",
-        image: "/imgs.jpg",
-        github: "https://github.com/yourusername/portfolio",
-        live: "https://yourecommerce.com",
-    },
+    },git 
 ];
 
 const MAX_LENGTH = 100;
