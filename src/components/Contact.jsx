@@ -1,29 +1,46 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import SendIcon from '@mui/icons-material/Send';
 import emailjs from '@emailjs/browser';
 
-
 function Contact() {
     const form = useRef();
-    const [sent, setSent] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [message, setMessage] = useState(null);
+    const [status, setStatus] = useState("");
+
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage(null);
+                setStatus("");
+            }, 4000); // 4 seconds
+
+            return () => clearTimeout(timer); // cleanup if component unmounts or message changes
+        }
+    }, [message]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        setError("");
+        setMessage(null);
+
         emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID, //service ID
-            import.meta.env.VITE_EMAILJS_TEMPLATE_ID, // template ID
+            "service_qw5mhke",
+            "template_y5f8vzi",
             form.current,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY // replace with your EmailJS user ID (public key)
-        ).then(() => {
-            setSent(true);
+            "R6Xu2nLlNahrP19uD"
+        )
+        .then(() => {
             setLoading(false);
-        }, (err) => {
-            setError("Failed to send. Please try again.");
+            setStatus("success");
+            setMessage("Message sent successfully!");
+            form.current.reset();
+        })
+        .catch((err) => {
             setLoading(false);
+            setStatus("error");
+            setMessage("Failed to send message. Please try again.");
+            console.error("EmailJS error:", err);
         });
     };
 
@@ -38,6 +55,7 @@ function Contact() {
                     onSubmit={handleSubmit}
                     className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 flex flex-col gap-4"
                 >
+                    {/* Inputs */}
                     <input
                         type="text"
                         name="user_name"
@@ -52,6 +70,13 @@ function Contact() {
                         className="border border-gray-300 dark:border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                         required
                     />
+                    <input
+                        type="text"
+                        name="subject"
+                        placeholder="Subject"
+                        className="border border-gray-300 dark:border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                        required
+                    />
                     <textarea
                         name="message"
                         placeholder="Message"
@@ -59,15 +84,27 @@ function Contact() {
                         className="border border-gray-300 dark:border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                         required
                     />
+                    {/* Submit button */}
                     <button
                         type="submit"
-                        className="flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold px-6 py-2 rounded hover:bg-blue-700 transition"
                         disabled={loading}
+                        className={`flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold px-6 py-2 rounded transition ${
+                            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+                        }`}
                     >
                         {loading ? "Sending..." : "Send Message"} <SendIcon fontSize="small" />
                     </button>
-                    {sent && <p className="text-green-600 mt-2 text-center">Message sent successfully!</p>}
-                    {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
+
+                    {/* Notification */}
+                    {message && (
+                        <p
+                            className={`text-sm mt-2 text-center font-medium ${
+                                status === "success" ? "text-green-600" : "text-red-500"
+                            }`}
+                        >
+                            {message}
+                        </p>
+                    )}
                 </form>
             </div>
         </section>
