@@ -70,12 +70,15 @@ const About = () => {
                             📄 CV
                         </h3>
                         <a
-                            href="/cv.pdf"
-                            download
-                            className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                          href="/cv.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
                         >
-                            Download CV
+                       View CV
                         </a>
+
+                        
                     </div>
                 </div>
             </div>
