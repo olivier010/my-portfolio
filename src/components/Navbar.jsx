@@ -24,22 +24,22 @@ const Navbar = () => {
                     <ul className="hidden md:flex space-x-6 text-gray-800 dark:text-white font-medium">
                         <li>
                             <a href="#home" className="hover:text-blue-500 transition flex items-center gap-1">
-                                <HomeIcon fontSize="small" /> Home
+                             Home
                             </a>
                         </li>
                         <li>
                             <a href="#about" className="hover:text-blue-500 transition flex items-center gap-1">
-                                <InfoIcon fontSize="small" /> About
+                                 About
                             </a>
                         </li>
                         <li>
                             <a href="#projects" className="hover:text-blue-500 transition flex items-center gap-1">
-                                <WorkIcon fontSize="small" /> Projects
+                                 Projects
                             </a>
                         </li>
                         <li>
                             <a href="#contact" className="hover:text-blue-500 transition flex items-center gap-1">
-                                <ContactMailIcon fontSize="small" /> Contact
+                                 Contact
                             </a>
                         </li>
                     </ul>
