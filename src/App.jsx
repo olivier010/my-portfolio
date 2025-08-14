@@ -5,6 +5,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Project from "./components/Project";
 import Footer from "./components/footer";
+import MoreAboutMe from "./components/MoreAboutMe";
 
 
 
@@ -18,6 +19,7 @@ function App() {
       <Navbar />
       <Home />
       <About />
+      <MoreAboutMe />
       <Project />
       <Contact />
       <Footer />
