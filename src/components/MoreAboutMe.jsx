@@ -29,15 +29,15 @@ const MoreAboutMe = () => {
             <ul className="space-y-4 mt-4">
               <li className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow">
                 <p className="font-semibold text-gray-900 dark:text-white">
-                  BSc (Hons) in Information and Communication Engineering
+                  Advanced Depoloma in Informatio Technology
                 </p>
-                <p className="text-gray-600 dark:text-gray-300">University of [Your University] — 202X - Present</p>
+                <p className="text-gray-600 dark:text-gray-300">Rwanda Polytechnic Karongi College — 2024 - Present</p>
               </li>
               <li className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow">
                 <p className="font-semibold text-gray-900 dark:text-white">
                   High School Diploma
                 </p>
-                <p className="text-gray-600 dark:text-gray-300">[Your School Name] — Graduated 20XX</p>
+                <p className="text-gray-600 dark:text-gray-300">Kirehe Advantniste TVET and Secondary School — Graduated 2023</p>
               </li>
             </ul>
           )}
