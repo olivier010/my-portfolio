@@ -12,9 +12,9 @@ const About = () => {
             About Me
           </h2>
           <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
-            Hi, I’m <span className="font-semibold text-blue-600 dark:text-blue-400">Manul Thanura</span> — a passionate, goal-driven learner
-            pursuing a BSc (Hons) in Information and Communication Engineering.
-            I thrive in <span className="font-medium">Full Stack Development</span> and
+            Hi, I’m <span className="font-semibold text-blue-600 dark:text-blue-400">NSENGIYUMVA YVES Olivier</span> — a passionate, goal-driven learner
+            Bachelor’s in Information Technology.
+            I thrive in <span className="font-medium">Frontend & backend, </span><span className="font-medium">Graphic Design</span> and
             <span className="font-medium"> Artificial Intelligence</span>, with a strong desire to create solutions that make a real impact.
             Every project I take on is an opportunity to learn, innovate, and grow.
           </p>
@@ -31,7 +31,7 @@ const About = () => {
         {/* Image Section */}
         <div className="flex-1 flex justify-center">
           <img
-            src="/prog.jpg"
+            src="/yvs.jpg"
             alt="Profile"
             className="w-64 h-64 md:w-72 md:h-72 object-cover rounded-xl shadow-lg"
           />
