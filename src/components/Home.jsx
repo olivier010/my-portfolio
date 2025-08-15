@@ -27,7 +27,7 @@ const Home = () => {
             className="pt-24 min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-950 text-center px-4"
         >
             <img
-                src="/prog.jpg"
+                src="/yvs.jpg"
                 alt="Avatar"
                 className="w-32 h-32 rounded-full shadow-lg border-4 border-blue-500 mb-6 object-cover"
             />
@@ -37,7 +37,7 @@ const Home = () => {
                 <span className="animate-blink">|</span>
             </h1>
             <p className="text-lg text-gray-700 dark:text-gray-300 mt-4 max-w-xl">
-                Frontend developer passionate about building modern, fast, and beautiful websites.
+                Frontend & Backend Developer, Graphic Designer, and Tech Enthusiast
             </p>
             <style>{`
                 @keyframes blink {
