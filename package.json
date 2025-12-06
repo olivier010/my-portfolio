@@ -4,17 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "vite build --mode analyze",
+    "lint": "eslint . --ext js,jsx,ts,tsx --fix",
+    "start": "NODE_OPTIONS=--max-old-space-size=4096 vite --host"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^16.1.6",
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^7.3.6",
     "@mui/material": "^7.3.6",
+    "contentful": "^11.9.0",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.23.25",
     "gray-matter": "^4.0.3",
@@ -28,6 +32,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^24.10.1",
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
@@ -37,7 +45,9 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "postcss": "^8.5.6",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^3.4.18",
-    "vite": "^7.2.6"
+    "vite": "^7.2.6",
+    "vite-plugin-image-optimizer": "^2.0.3"
   }
 }

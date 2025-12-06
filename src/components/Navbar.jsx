@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, Instagram, Twitter } from 'lucide-react';
+import { Menu, X, Github, Instagram, Twitter, Moon, Sun } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
+    const { theme, toggleTheme } = useTheme();
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -84,8 +86,24 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Social Icons */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    {/* Theme Toggle and Social Icons */}
+                    <div className="hidden md:flex items-center space-x-2">
+                        {/* Theme Toggle */}
+                        <motion.button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                        >
+                            {theme === 'dark' ? (
+                                <Sun className="w-5 h-5" />
+                            ) : (
+                                <Moon className="w-5 h-5" />
+                            )}
+                        </motion.button>
+                        
+                        {/* Social Icons */}
                         {socialLinks.map((link, index) => (
                             <motion.a
                                 key={index}
