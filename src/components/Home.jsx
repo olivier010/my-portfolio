@@ -1,55 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Home = () => {
-    const fullText = "Hi, my name is Yves";
-    const [displayText, setDisplayText] = useState("");
-
-    useEffect(() => {
-        let i = 0;
-        setDisplayText("");
-        const interval = setInterval(() => {
-            setDisplayText(fullText.slice(0, i + 1));
-            i++;
-            if (i === fullText.length) clearInterval(interval);
-        }, 80);
-        return () => clearInterval(interval);
-    }, []);
-
-    // Split the displayText so 'Yves' is blue
-    const name = "Yves";
-    const nameIndex = displayText.indexOf(name);
-    const beforeName = nameIndex !== -1 ? displayText.slice(0, nameIndex) : displayText;
-    const typedName = nameIndex !== -1 ? displayText.slice(nameIndex) : "";
-
     return (
-        <section
-            id="home"
-            className="pt-24 min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-950 text-center px-4"
-        >
-            <img
-                src="/yvs.jpg"
-                alt="Avatar"
-                className="w-32 h-32 rounded-full shadow-lg border-4 border-blue-500 mb-6 object-cover"
-            />
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white min-h-[3rem]">
-                {beforeName}
-                <span className="text-blue-600">{typedName}</span>
-                <span className="animate-blink">|</span>
-            </h1>
-            <p className="text-lg text-gray-700 dark:text-gray-300 mt-4 max-w-xl">
-                Frontend & Backend Developer, Graphic Designer, and Tech Enthusiast
-            </p>
-            <style>{`
-                @keyframes blink {
-                    0%, 50% { opacity: 1; }
-                    51%, 100% { opacity: 0; }
-                }
-                .animate-blink {
-                    display: inline-block;
-                    width: 1ch;
-                    animation: blink 1s steps(1) infinite;
-                }
-            `}</style>
+        <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+            <div className="max-w-4xl mx-auto text-center px-4 py-16">
+                <div className="mb-8">
+                    <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100">
+                        <img 
+                            src="/yvs.jpg" 
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        Hi, I'm <span className="text-blue-600">Yves</span>
+                    </h1>
+                    <h2 className="text-xl md:text-2xl text-gray-600 mb-8">
+                        Software Developer & Problem Solver
+                    </h2>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <a
+                            href="#contact"
+                            className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            Get In Touch
+                        </a>
+                        <a
+                            href="#projects"
+                            className="px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition duration-300"
+                        >
+                            View My Work
+                        </a>
+                    </div>
+                </div>
+                
+                <div className="mt-16">
+                    <p className="text-gray-600 mb-4">Scroll down to explore more</p>
+                    <div className="animate-bounce">
+                        <svg 
+                            className="w-6 h-6 mx-auto text-blue-500" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24" 
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth="2" 
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };
