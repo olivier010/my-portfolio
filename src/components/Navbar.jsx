@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Instagram, Twitter, Moon, Sun } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
@@ -25,11 +25,11 @@ const Navbar = () => {
     }, []);
 
     const navItems = [
-        { name: 'Home', href: '#home' },
-        { name: 'About', href: '#about' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Blog', href: '#blog' },
-        { name: 'Contact', href: '#contact' },
+        { name: 'Home', to: '/', isHash: false },
+        { name: 'About', to: '#about', isHash: true },
+        { name: 'Projects', to: '/projects', isHash: false },
+        { name: 'Blog', to: '/blog', isHash: false },
+        { name: 'Contact', to: '#contact', isHash: true },
     ];
 
     const socialLinks = [
@@ -67,21 +67,66 @@ const Navbar = () => {
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-baseline space-x-8">
                             {navItems.map((item) => (
-                                <motion.a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="relative px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                    whileHover={{ y: -2 }}
-                                >
-                                    {item.name}
-                                    {location.hash === item.href && (
-                                        <motion.span 
-                                            className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
-                                            layoutId="nav-underline"
-                                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                        />
-                                    )}
-                                </motion.a>
+                                item.isHash ? (
+                                    <motion.a
+                                        key={item.name}
+                                        href={item.to}
+                                        className="relative px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                        whileHover={{ y: -2 }}
+                                    >
+                                        {item.name}
+                                        {location.hash === item.to && (
+                                            <motion.span 
+                                                className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
+                                                layoutId="nav-underline"
+                                                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                            />
+                                        )}
+                                    </motion.a>
+                                ) : (
+                                    <motion.div
+                                        key={item.name}
+                                        className="relative"
+                                        whileHover={{ y: -2 }}
+                                    >
+                                        {item.name === 'Projects' ? (
+                                            <a 
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const projectsSection = document.getElementById('projects');
+                                                    if (projectsSection) {
+                                                        projectsSection.scrollIntoView({ behavior: 'smooth' });
+                                                    }
+                                                }}
+                                                className="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                            >
+                                                Projects
+                                                {window.location.hash === '#projects' && (
+                                                    <motion.span 
+                                                        className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
+                                                        layoutId="nav-underline"
+                                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                                    />
+                                                )}
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                to={item.to}
+                                                className="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                            >
+                                                {item.name}
+                                                {location.pathname === item.to && (
+                                                    <motion.span 
+                                                        className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
+                                                        layoutId="nav-underline"
+                                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                                    />
+                                                )}
+                                            </Link>
+                                        )}
+                                    </motion.div>
+                                )
                             ))}
                         </div>
                     </div>
@@ -112,7 +157,7 @@ const Navbar = () => {
                                 rel="noopener noreferrer"
                                 className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                 whileHover={{ y: -2, scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileTap={{ scale: 0.9 }}
                             >
                                 {link.icon}
                             </motion.a>
@@ -147,15 +192,30 @@ const Navbar = () => {
                     >
                         <div className="px-4 py-3 space-y-3">
                             {navItems.map((item) => (
-                                <motion.a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    whileHover={{ x: 5 }}
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    {item.name}
-                                </motion.a>
+                                item.isHash ? (
+                                    <motion.a
+                                        key={item.name}
+                                        href={item.to}
+                                        className="block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                        whileHover={{ x: 5 }}
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        {item.name}
+                                    </motion.a>
+                                ) : (
+                                    <motion.div
+                                        key={item.name}
+                                        whileHover={{ x: 5 }}
+                                    >
+                                        <Link
+                                            to={item.to}
+                                            className="block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                            onClick={() => setMenuOpen(false)}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </motion.div>
+                                )
                             ))}
                             <div className="flex justify-center space-x-6 pt-4 pb-2">
                                 {socialLinks.map((link, index) => (
