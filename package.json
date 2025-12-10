@@ -19,6 +19,7 @@
     "@mui/icons-material": "^7.3.6",
     "@mui/material": "^7.3.6",
     "contentful": "^11.9.0",
+    "date-fns": "^4.1.0",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.23.25",
     "gray-matter": "^4.0.3",
