@@ -1,15 +1,27 @@
 // src/App.jsx
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
-import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import Projects from "./components/Projects";
-import AboutMe from "./components/AboutMe";
-import BlogSection from "./components/BlogSection";
-import BlogPost from "./pages/BlogPost";
-import ContactSection from "./components/ContactSection";
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Lazy load components for better performance
+const Navbar = React.lazy(() => import('./components/Navbar'));
+const Home = React.lazy(() => import('./components/Home'));
+const AboutMe = React.lazy(() => import('./components/AboutMe'));
+const HomeProjects = React.lazy(() => import('./components/HomeProjects'));
+const BlogSection = React.lazy(() => import('./components/BlogSection'));
+const BlogPost = React.lazy(() => import('./pages/BlogPost'));
+const ContactSection = React.lazy(() => import('./components/ContactSection'));
+const ProjectDetail = React.lazy(() => import('./pages/ProjectDetail'));
+const ProjectsPage = React.lazy(() => import('./pages/Projects'));
+
+// Loading component
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 // This component handles scroll behavior
 const ScrollToTop = () => {
@@ -36,40 +48,61 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <ScrollToTop />
-      <Navbar />
-      
-      <AnimatePresence mode="wait">
-        <motion.main
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants}
-        >
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Home />
-                <AboutMe />
-                <Projects />
-                <BlogSection />
-                <ContactSection />
-              </>
-            } />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-          </Routes>
-        </motion.main>
-      </AnimatePresence>
+      <Suspense fallback={<LoadingFallback />}>
+        <Navbar />
+        
+        <AnimatePresence mode="wait">
+          <motion.main
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            className="min-h-[calc(100vh-4rem)]"
+          >
+            <Routes>
+              <Route path="/" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <Home />
+                  <AboutMe />
+                  <HomeProjects />
+                  <BlogSection />
+                  <ContactSection />
+                </Suspense>
+              } />
+              <Route path="/blog/:slug" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <BlogPost />
+                </Suspense>
+              } />
+              <Route path="/projects/:slug" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <ProjectDetail />
+                </Suspense>
+              } />
+              <Route path="/projects" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <ProjectsPage />
+                </Suspense>
+              } />
+            </Routes>
+          </motion.main>
+        </AnimatePresence>
+      </Suspense>
     </div>
   );
 }
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </Router>
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingFallback />}>
+        <Router>
+          <ThemeProvider>
+            <AppContent />
+          </ThemeProvider>
+        </Router>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 
