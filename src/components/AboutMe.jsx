@@ -63,7 +63,7 @@ const AboutMe = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
               <div className="relative bg-white dark:bg-gray-800 p-0.5 rounded-full">
                 <img
-                  src="/yvs.jpg"
+                  src="/yvs.png"
                   alt="NSENGIYUMVA YVES Olivier"
                   className="w-full h-full rounded-full object-cover shadow-lg"
                   onError={(e) => {

@@ -7,7 +7,7 @@ const Home = () => {
                 <div className="mb-8">
                     <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100">
                         <img 
-                            src="/yvs.jpg" 
+                            src="/yvs.png" 
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
