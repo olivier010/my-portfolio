@@ -1,4 +1,4 @@
-// src/App.jsx
+git// src/App.jsx
 import React, { useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -16,7 +16,7 @@ const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const ContactSection = React.lazy(() => import('./components/ContactSection'));
 const ProjectDetail = React.lazy(() => import('./pages/ProjectDetail'));
 const ProjectsPage = React.lazy(() => import('./pages/Projects'));
-const Footer = React.lazy(() => import('./components/Footer'));
+const Footer = React.lazy(() => import('./components/footer'));
 
 // Loading component
 const LoadingFallback = () => (
