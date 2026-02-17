@@ -1,7 +1,6 @@
 // src/pages/ProjectDetail.jsx
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { ArrowLeft, Github, ExternalLink } from 'lucide-react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { getProjectBySlug } from '../utils/projectService'
@@ -56,12 +55,7 @@ const ProjectDetail = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20 px-4"
-    >
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20 px-4">
       <div className="max-w-4xl mx-auto">
         <Link
           to="/#projects"
@@ -71,10 +65,10 @@ const ProjectDetail = () => {
         </Link>
 
         <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-          {project.fields.image && (
+          {project.fields.featuredImage && (
             <div className="h-96 overflow-hidden">
               <img
-                src={project.fields.image.fields.file.url + '?w=1200'}
+                src={project.fields.featuredImage.fields.file.url + '?w=1200'}
                 alt={project.fields.title}
                 className="w-full h-full object-cover"
               />
@@ -88,9 +82,9 @@ const ProjectDetail = () => {
               </h1>
               
               <div className="flex space-x-4">
-                {project.fields.github && (
+                {project.fields.gitHubUrl && (
                   <a
-                    href={project.fields.github}
+                    href={project.fields.gitHubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors"
@@ -100,9 +94,9 @@ const ProjectDetail = () => {
                   </a>
                 )}
                 
-                {project.fields.live && (
+                {project.fields.liveDemoUrl && (
                   <a
-                    href={project.fields.live}
+                    href={project.fields.liveDemoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors"
@@ -113,26 +107,78 @@ const ProjectDetail = () => {
               </div>
             </div>
 
-            {project.fields.technologies && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.fields.technologies.map((tech, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 text-sm rounded-full"
-                  >
-                    {tech}
-                  </span>
-                ))}
+            {/* Project Description */}
+            {project.fields.description && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Description</h2>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {project.fields.description}
+                </p>
               </div>
             )}
 
-            <div className="prose dark:prose-invert max-w-none">
-              {project.fields.content && documentToReactComponents(project.fields.content)}
-            </div>
+            {/* Technologies */}
+            {project.fields.technologies && project.fields.technologies.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Technologies Used</h2>
+                <div className="flex flex-wrap gap-2">
+                  {project.fields.technologies.map((tech, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 text-sm rounded-full"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Project Date */}
+            {project.fields.projectDate && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Project Date</h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {new Date(project.fields.projectDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              </div>
+            )}
+
+            {/* Rich Content */}
+            {project.fields.content && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Project Details</h2>
+                <div className="prose dark:prose-invert max-w-none">
+                  {documentToReactComponents(project.fields.content)}
+                </div>
+              </div>
+            )}
+
+            {/* Additional Images Gallery */}
+            {project.fields.additionalImages && project.fields.additionalImages.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Project Gallery</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {project.fields.additionalImages.map((image, index) => (
+                    <div key={index} className="rounded-lg overflow-hidden">
+                      <img
+                        src={image.fields.file.url + '?w=600'}
+                        alt={`${project.fields.title} - Image ${index + 1}`}
+                        className="w-full h-48 object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </article>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

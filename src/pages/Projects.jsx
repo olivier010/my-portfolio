@@ -1,7 +1,6 @@
 // src/pages/Projects.jsx
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { Github, ExternalLink, Calendar, Code, Tag } from 'lucide-react'
 import { getProjects } from '../utils/projectService'
 import { format } from 'date-fns'
@@ -67,7 +66,8 @@ const ProjectsPage = () => {
     if (!dateString) return 'No date specified';
     try {
       return format(new Date(dateString), 'MMMM yyyy');
-    } catch (e) {
+    } catch (error) {
+      console.error('Error formatting date:', error)
       return dateString;
     }
   };
@@ -83,13 +83,9 @@ const ProjectsPage = () => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {projects.map((project, index) => (
-            <motion.div
+          {projects.map((project) => (
+            <div
               key={project.sys.id}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.2, delay: index * 0.05 }}
               className="group"
             >
               <Link
@@ -188,7 +184,7 @@ const ProjectsPage = () => {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

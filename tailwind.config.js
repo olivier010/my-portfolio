@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-const { fontFamily } = require('tailwindcss/defaultTheme')
+import typography from '@tailwindcss/typography'
+import forms from '@tailwindcss/forms'
+import lineClamp from '@tailwindcss/line-clamp'
 
-module.exports = {
+export default {
   darkMode: 'class',
-  mode: 'jit',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -31,26 +32,16 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
-        display: ['Poppins', ...fontFamily.sans],
-        mono: ['Fira Code', ...fontFamily.mono],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Poppins', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
       },
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/line-clamp'),
+    typography,
+    forms,
+    lineClamp,
   ],
-  ...(process.env.NODE_ENV === 'production' ? {
-    purge: {
-      enabled: true,
-      content: [
-        "./index.html",
-        "./src/**/*.{js,ts,jsx,tsx}",
-      ],
-      safelist: ['dark'],
-    },
-  } : {}),
 }
 

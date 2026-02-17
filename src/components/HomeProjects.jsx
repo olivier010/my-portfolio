@@ -239,7 +239,7 @@ const HomeProjects = () => {
                           )}
                         </div>
                         
-                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
                           View
                         </span>
                       </div>

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import AIChatbot from './components/AIChatbot';
 
 // Lazy load components for better performance
 const Navbar = React.lazy(() => import('./components/Navbar'));
@@ -18,7 +19,7 @@ const ProjectsPage = React.lazy(() => import('./pages/Projects'));
 
 // Loading component
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center">
+  <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
   </div>
 );
@@ -46,7 +47,7 @@ const pageVariants = {
 
 function AppContent() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
       <ScrollToTop />
       <Suspense fallback={<LoadingFallback />}>
         <Navbar />
@@ -88,6 +89,7 @@ function AppContent() {
           </motion.main>
         </AnimatePresence>
       </Suspense>
+      <AIChatbot />
     </div>
   );
 }

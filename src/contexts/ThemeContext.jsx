@@ -19,8 +19,9 @@ export const ThemeProvider = ({ children }) => {
       const savedTheme = localStorage.getItem('theme') || 
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       
-      setTheme(savedTheme);
+      // Apply theme after setting mounted to avoid layout shift
       setMounted(true);
+      setTheme(savedTheme);
       
       // Watch for system theme changes
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -49,8 +50,10 @@ export const ThemeProvider = ({ children }) => {
     try {
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.removeAttribute('data-theme');
       }
       localStorage.setItem('theme', theme);
     } catch (error) {
@@ -76,12 +79,13 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  
   if (typeof window === 'undefined') {
     // Return default values during SSR
     return { theme: 'light', toggleTheme: () => {} };
   }
 
-  const context = useContext(ThemeContext);
   if (context === undefined) {
     console.warn('useTheme must be used within a ThemeProvider');
     return { theme: 'light', toggleTheme: () => {} };

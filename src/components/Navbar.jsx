@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Instagram, Twitter, Moon, Sun } from 'lucide-react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
     const location = useLocation();
+    const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
 
     // Close mobile menu when route changes
@@ -15,20 +17,60 @@ const Navbar = () => {
         setMenuOpen(false);
     }, [location]);
 
-    // Navbar scroll effect
+    // Track active section based on scroll position
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
+            
+            // Determine which section is currently in view
+            const sections = ['home', 'about', 'projects', 'blog', 'contact'];
+            const scrollPosition = window.scrollY + 100; // Offset for navbar height
+            
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const { offsetTop, offsetHeight } = element;
+                    if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+                        setActiveSection(section);
+                        break;
+                    }
+                }
+            }
         };
+
         window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Call once on mount
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // Handle hash scrolling
+    const handleHashScroll = (hash) => {
+        const sectionId = hash.substring(1); // Remove the # symbol
+        setActiveSection(sectionId); // Update active section immediately
+        
+        if (location.pathname !== '/') {
+            // If not on home page, navigate to home first, then scroll
+            navigate('/', { replace: true });
+            setTimeout(() => {
+                const element = document.querySelector(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        } else {
+            // If on home page, just scroll
+            const element = document.querySelector(hash);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
 
     const navItems = [
         { name: 'Home', to: '/', isHash: false },
         { name: 'About', to: '#about', isHash: true },
-        { name: 'Projects', to: '/projects', isHash: false },
-        { name: 'Blog', to: '/blog', isHash: false },
+        { name: 'Projects', to: '#projects', isHash: true },
+        { name: 'Blog', to: '#blog', isHash: true },
         { name: 'Contact', to: '#contact', isHash: true },
     ];
 
@@ -71,11 +113,15 @@ const Navbar = () => {
                                     <motion.a
                                         key={item.name}
                                         href={item.to}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleHashScroll(item.to);
+                                        }}
                                         className="relative px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                                         whileHover={{ y: -2 }}
                                     >
                                         {item.name}
-                                        {location.hash === item.to && (
+                                        {activeSection === item.to.substring(1) && (
                                             <motion.span 
                                                 className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
                                                 layoutId="nav-underline"
@@ -89,42 +135,22 @@ const Navbar = () => {
                                         className="relative"
                                         whileHover={{ y: -2 }}
                                     >
-                                        {item.name === 'Projects' ? (
-                                            <a 
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    const projectsSection = document.getElementById('projects');
-                                                    if (projectsSection) {
-                                                        projectsSection.scrollIntoView({ behavior: 'smooth' });
-                                                    }
-                                                }}
-                                                className="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-                                            >
-                                                Projects
-                                                {window.location.hash === '#projects' && (
-                                                    <motion.span 
-                                                        className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
-                                                        layoutId="nav-underline"
-                                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                                    />
-                                                )}
-                                            </a>
-                                        ) : (
-                                            <Link
-                                                to={item.to}
-                                                className="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                            >
-                                                {item.name}
-                                                {location.pathname === item.to && (
-                                                    <motion.span 
-                                                        className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
-                                                        layoutId="nav-underline"
-                                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                                    />
-                                                )}
-                                            </Link>
-                                        )}
+                                        <Link
+                                            to={item.to}
+                                            className="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                            onClick={() => {
+                                                setActiveSection('home');
+                                            }}
+                                        >
+                                            {item.name}
+                                            {(activeSection === 'home' && item.name === 'Home') && (
+                                                <motion.span 
+                                                    className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
+                                                    layoutId="nav-underline"
+                                                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                                />
+                                            )}
+                                        </Link>
                                     </motion.div>
                                 )
                             ))}
@@ -196,9 +222,17 @@ const Navbar = () => {
                                     <motion.a
                                         key={item.name}
                                         href={item.to}
-                                        className="block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleHashScroll(item.to);
+                                            setMenuOpen(false);
+                                        }}
+                                        className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                                            activeSection === item.to.substring(1)
+                                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                                : 'text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                        }`}
                                         whileHover={{ x: 5 }}
-                                        onClick={() => setMenuOpen(false)}
                                     >
                                         {item.name}
                                     </motion.a>
@@ -209,8 +243,15 @@ const Navbar = () => {
                                     >
                                         <Link
                                             to={item.to}
-                                            className="block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                            onClick={() => setMenuOpen(false)}
+                                            className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                                                (activeSection === 'home' && item.name === 'Home')
+                                                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                                    : 'text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                            }`}
+                                            onClick={() => {
+                                                setActiveSection('home');
+                                                setMenuOpen(false);
+                                            }}
                                         >
                                             {item.name}
                                         </Link>
