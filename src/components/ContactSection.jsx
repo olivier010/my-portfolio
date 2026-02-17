@@ -186,12 +186,12 @@ const ContactSection = () => {
                                                     <h3 className="font-medium text-blue-100">Email</h3>
                                                     <div className="flex items-center justify-between">
                                                         <a href="mailto:your.email@example.com" className="text-blue-300 hover:text-white text-sm transition-colors">
-                                                            your.email@example.com
+                                                            oliviernsengiyumva010@gmail.com
                                                         </a>
                                                         <button 
                                                             onClick={(e) => {
                                                                 e.preventDefault();
-                                                                navigator.clipboard.writeText('your.email@example.com');
+                                                                navigator.clipboard.writeText('oliviernsengiyumva010@gmail.com');
                                                                 // Optional: Add a toast notification here
                                                             }}
                                                             className="text-blue-400 hover:text-blue-200 transition-colors p-1 -mr-2"
@@ -211,12 +211,12 @@ const ContactSection = () => {
                                                     <h3 className="font-medium text-blue-100">Phone</h3>
                                                     <div className="flex items-center">
                                                         <a href="tel:+1234567890" className="text-blue-300 hover:text-white text-sm transition-colors">
-                                                            +1 (234) 567-890
+                                                            +(250) 791-839-279
                                                         </a>
                                                         <button 
                                                             onClick={(e) => {
                                                                 e.preventDefault();
-                                                                navigator.clipboard.writeText('+1234567890');
+                                                                navigator.clipboard.writeText('+250791839279');
                                                                 // Optional: Add a toast notification here
                                                             }}
                                                             className="text-blue-400 hover:text-blue-200 transition-colors p-1 -mr-2 ml-2"
@@ -234,7 +234,7 @@ const ContactSection = () => {
                                                 </div>
                                                 <div>
                                                     <h3 className="font-medium text-blue-100">Location</h3>
-                                                    <p className="text-blue-300 text-sm">City, Country</p>
+                                                    <p className="text-blue-300 text-sm">Kigali, Rwanda</p>
                                                 </div>
                                             </div>
 
@@ -242,7 +242,7 @@ const ContactSection = () => {
                                                 <h3 className="text-sm font-medium text-blue-100 mb-3">Connect with me</h3>
                                                 <div className="flex space-x-3">
                                                     <a 
-                                                        href="https://github.com/yourusername" 
+                                                        href="https://github.com/olivier010"
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         className="p-2 bg-white/10 hover:bg-blue-600/30 rounded-lg text-blue-200 hover:text-white transition-colors"
@@ -260,7 +260,7 @@ const ContactSection = () => {
                                                         <Linkedin className="w-5 h-5" />
                                                     </a>
                                                     <a 
-                                                        href="https://twitter.com/yourusername" 
+                                                        href="https://twitter.com/yves_olly_" 
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         className="p-2 bg-white/10 hover:bg-blue-600/30 rounded-lg text-blue-200 hover:text-white transition-colors"
