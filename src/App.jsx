@@ -16,6 +16,7 @@ const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const ContactSection = React.lazy(() => import('./components/ContactSection'));
 const ProjectDetail = React.lazy(() => import('./pages/ProjectDetail'));
 const ProjectsPage = React.lazy(() => import('./pages/Projects'));
+const Footer = React.lazy(() => import('./components/Footer'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -88,6 +89,8 @@ function AppContent() {
             </Routes>
           </motion.main>
         </AnimatePresence>
+        
+        <Footer />
       </Suspense>
       <AIChatbot />
     </div>

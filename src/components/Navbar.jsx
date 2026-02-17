@@ -48,21 +48,26 @@ const Navbar = () => {
         const sectionId = hash.substring(1); // Remove the # symbol
         setActiveSection(sectionId); // Update active section immediately
         
+        // Close mobile menu immediately
+        setMenuOpen(false);
+        
         if (location.pathname !== '/') {
             // If not on home page, navigate to home first, then scroll
             navigate('/', { replace: true });
             setTimeout(() => {
                 const element = document.querySelector(hash);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-            }, 100);
+            }, 300); // Increased delay for navigation
         } else {
-            // If on home page, just scroll
-            const element = document.querySelector(hash);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
+            // If on home page, just scroll with small delay for mobile menu close
+            setTimeout(() => {
+                const element = document.querySelector(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100); // Small delay for mobile menu animation
         }
     };
 
@@ -225,7 +230,6 @@ const Navbar = () => {
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleHashScroll(item.to);
-                                            setMenuOpen(false);
                                         }}
                                         className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
                                             activeSection === item.to.substring(1)
