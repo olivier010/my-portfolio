@@ -135,6 +135,14 @@ export default function BlogSection() {
             </Link>
           ))}
         </div>
+        <div className="text-center mt-10">
+          <Link
+            to="/blog"
+            className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+          >
+            View all posts <span className="ml-1">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   )

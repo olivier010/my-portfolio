@@ -13,6 +13,7 @@ const AboutMe = React.lazy(() => import('./components/AboutMe'));
 const HomeProjects = React.lazy(() => import('./components/HomeProjects'));
 const BlogSection = React.lazy(() => import('./components/BlogSection'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
+const Blog = React.lazy(() => import('./pages/Blog'));
 const ContactSection = React.lazy(() => import('./components/ContactSection'));
 const ProjectDetail = React.lazy(() => import('./pages/ProjectDetail'));
 const ProjectsPage = React.lazy(() => import('./pages/Projects'));
@@ -69,6 +70,11 @@ function AppContent() {
                   <HomeProjects />
                   <BlogSection />
                   <ContactSection />
+                </Suspense>
+              } />
+              <Route path="/blog" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <Blog />
                 </Suspense>
               } />
               <Route path="/blog/:slug" element={

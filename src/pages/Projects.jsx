@@ -187,6 +187,17 @@ const ProjectsPage = () => {
             </div>
           ))}
         </div>
+        
+        {/* Back to project section */}
+        <div className="text-center mt-12">
+          <Link
+            to="/#projects"
+            className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+          >
+            <ExternalLink className="w-4 h-4 mr-1 rotate-180" />
+            Back to project section
+          </Link>
+        </div>
       </div>
     </div>
   )

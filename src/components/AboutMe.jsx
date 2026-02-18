@@ -5,9 +5,9 @@ import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapP
 const AboutMe = () => {
   const skills = [
     { name: 'Frontend', level: 90, icon: <Layout className="w-5 h-5" /> },
-    { name: 'Backend', level: 85, icon: <Server className="w-5 h-5" /> },
-    { name: 'UI/UX Design', level: 80, icon: <Paintbrush className="w-5 h-5" /> },
-    { name: 'Mobile Dev', level: 75, icon: <Smartphone className="w-5 h-5" /> },
+    { name: 'Backend', level: 50, icon: <Server className="w-5 h-5" /> },
+    { name: 'UI/UX Design', level: 95, icon: <Paintbrush className="w-5 h-5" /> },
+    { name: 'Mobile Dev', level: 40, icon: <Smartphone className="w-5 h-5" /> },
     { name: 'AI/ML', level: 70, icon: <Cpu className="w-5 h-5" /> },
     { name: 'Database', level: 85, icon: <Database className="w-5 h-5" /> },
   ];
@@ -67,7 +67,7 @@ const AboutMe = () => {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   NSENGIYUMVA YVES Olivier
                 </h3>
-                <p className="text-blue-600 dark:text-blue-400 mb-4">Software Engineer</p>
+                <p className="text-blue-600 dark:text-blue-400 mb-4">Software Developer</p>
               </div>
               
               <div className="relative group w-24 h-24 mx-auto mb-6">
@@ -88,7 +88,7 @@ const AboutMe = () => {
               <div className="space-y-3 border-t border-gray-100 dark:border-gray-700 pt-4">
                 <div className="flex items-center space-x-3">
                   <Mail className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">your.email@example.com</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">oliviernsengiyumva010@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="w-4 h-4 text-gray-400" />
@@ -108,9 +108,11 @@ const AboutMe = () => {
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">About Me</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                I'm a passionate software engineer with a Bachelor's degree in Information Technology. 
-                I specialize in creating beautiful, functional, and user-centered digital experiences 
-                that solve real-world problems.
+               I am NSENGIYUMVA Yves Olivier, an Information Technology student passionate about software development and digital innovation.
+               I specialize in building responsive web applications using React.js and Tailwind CSS, with backend experience in Java and PHP.
+               I enjoy transforming ideas into practical solutions that solve real-world problems.
+               As a fast learner and problem-solver, I am continuously improving my technical skills and exploring modern technologies to build scalable and user-friendly applications.
+               My goal is to grow into a professional software engineer who creates impactful and efficient digital solutions.
               </p>
             </div>
           </motion.div>
@@ -157,10 +159,16 @@ const AboutMe = () => {
               </div>
               <div className="space-y-3">
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Bachelor of Information Technology</h4>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">University Name</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">2018 - 2022</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">Advanced Deploma in Information Technology</h4>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">RP KARONGI COLLEGE</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">2024 - Present</p>
                 </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">Advanced Deploma in Information Technology</h4>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">RP KARONGI COLLEGE</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">2024 - Present</p>
+                </div>
+                
               </div>
             </div>
           </motion.div>
