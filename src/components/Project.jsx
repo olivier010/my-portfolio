@@ -99,7 +99,7 @@ const Project = () => {
     <section id="projects" className="py-12 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-          Projects
+          Projectss
         </h2>
         <div
           className="relative"
