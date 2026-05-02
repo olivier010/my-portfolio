@@ -5,6 +5,15 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { ArrowLeft, Clock, Calendar, Tag, Share2, Bookmark, MessageSquare, Heart, ThumbsUp, Eye, Copy, Check } from 'lucide-react'
 import { getEntries } from '../utils/contentful'
 
+const extractRichTextText = (node) => {
+  if (!node) return ''
+  if (typeof node === 'string') return node
+  if (Array.isArray(node)) return node.map(extractRichTextText).join(' ')
+  if (node.nodeType === 'text') return node.value || ''
+  if (node.content) return node.content.map(extractRichTextText).join(' ')
+  return ''
+}
+
 // Custom components for rich text rendering
 const renderOptions = {
   renderNode: {
@@ -235,7 +244,8 @@ export default function BlogPost() {
     )
   }
 
-  const readTime = Math.ceil(post.fields.content.content[0].content[0].value.length / 200)
+  const postContentText = extractRichTextText(post.fields.content)
+  const readTime = Math.max(1, Math.ceil(postContentText.trim().split(/\s+/).filter(Boolean).length / 200))
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20 px-4">

@@ -1,6 +1,6 @@
 // src/components/Projects.jsx
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Github, ExternalLink, Calendar, Tag } from 'lucide-react';
 import { getProjects } from '../utils/projectService'
@@ -10,6 +10,7 @@ const HomeProjects = () => {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -150,9 +151,17 @@ const HomeProjects = () => {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 className="group"
               >
-                <Link
-                  to={`/projects/${project.fields.slug}`}
-                  className="block h-full"
+                <div
+                  className="block h-full cursor-pointer"
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => navigate(`/projects/${project.fields.slug}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      navigate(`/projects/${project.fields.slug}`)
+                    }
+                  }}
                 >
                   <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-200 flex flex-col">
                     {project.fields.featuredImage?.fields?.file?.url ? (
@@ -245,7 +254,7 @@ const HomeProjects = () => {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))
           ) : (
