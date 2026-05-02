@@ -313,72 +313,72 @@ export default function BlogPost() {
             </div>
 
             {/* Engagement Bar */}
-            <div className="flex flex-wrap items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex space-x-4">
+            <div className="flex items-center justify-between gap-3 overflow-x-auto whitespace-nowrap pt-6 border-t border-gray-200 dark:border-gray-700 pb-1">
+              <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                 <button
                   onClick={toggleLike}
-                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium transition-colors shrink-0 ${
                     isLiked 
                       ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                   }`}
                 >
-                  <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
+                  <Heart className={`w-3 h-3 mr-1 ${isLiked ? 'fill-current' : ''}`} />
                   {likes} {likes === 1 ? 'Like' : 'Likes'}
                 </button>
                 
                 <button
                   onClick={toggleBookmark}
-                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium transition-colors shrink-0 ${
                     isBookmarked 
                       ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                   }`}
                 >
-                  <Bookmark className={`w-4 h-4 mr-2 ${isBookmarked ? 'fill-current' : ''}`} />
+                  <Bookmark className={`w-3 h-3 mr-1 ${isBookmarked ? 'fill-current' : ''}`} />
                   {isBookmarked ? 'Bookmarked' : 'Bookmark'}
                 </button>
                 
                 <div className="relative">
                   <button
                     onClick={() => setShowShareOptions(!showShareOptions)}
-                    className="flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 text-sm font-medium"
+                    className="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 text-xs sm:text-sm font-medium shrink-0"
                   >
-                    <Share2 className="w-4 h-4 mr-2" /> Share
+                    <Share2 className="w-3 h-3 mr-1" /> Share
                   </button>
                   
                   {showShareOptions && (
-                    <div className="absolute bottom-full mb-2 left-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[200px]">
+                    <div className="absolute bottom-full mb-2 left-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[180px] sm:min-w-[200px]">
                       <button
                         onClick={() => handleShare('twitter')}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
                       >
                         Share on Twitter
                       </button>
                       <button
                         onClick={() => handleShare('linkedin')}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
                       >
                         Share on LinkedIn
                       </button>
                       <button
                         onClick={() => handleShare('facebook')}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
                       >
                         Share on Facebook
                       </button>
                       <button
                         onClick={() => handleShare('copy')}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center"
+                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center"
                       >
                         {copiedLink ? (
                           <>
-                            <Check className="w-4 h-4 mr-2 text-green-600" />
+                            <Check className="w-3.5 h-3.5 mr-2 text-green-600" />
                             Copied!
                           </>
                         ) : (
                           <>
-                            <Copy className="w-4 h-4 mr-2" />
+                            <Copy className="w-3.5 h-3.5 mr-2" />
                             Copy Link
                           </>
                         )}
@@ -390,9 +390,9 @@ export default function BlogPost() {
               
               <button 
                 onClick={() => setShowComments(!showComments)}
-                className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                className="inline-flex items-center shrink-0 text-xs sm:text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
-                <MessageSquare className="w-4 h-4 mr-2" /> 
+                <MessageSquare className="w-3 h-3 mr-1" /> 
                 {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
               </button>
             </div>
@@ -410,12 +410,12 @@ export default function BlogPost() {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Leave a comment..."
-                className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
-                rows="4"
+                className="w-full p-3 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+                rows="3"
               />
               <button
                 type="submit"
-                className="mt-3 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="mt-3 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Post Comment
               </button>
@@ -443,9 +443,9 @@ export default function BlogPost() {
                       </div>
                       <button
                         onClick={() => handleCommentLike(comment.id)}
-                        className="flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 ml-4"
+                        className="inline-flex items-center text-xs sm:text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 ml-3 sm:ml-4"
                       >
-                        <ThumbsUp className="w-4 h-4 mr-1" />
+                        <ThumbsUp className="w-3.5 h-3.5 mr-1" />
                         {comment.likes}
                       </button>
                     </div>
