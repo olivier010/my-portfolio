@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, Instagram, Twitter, Moon, Sun } from 'lucide-react';
+import { Menu, X, Github, Instagram, Twitter, Linkedin, Moon, Sun } from 'lucide-react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -81,6 +81,7 @@ const Navbar = () => {
 
     const socialLinks = [
         { icon: <Github size={20} />, href: 'https://github.com/olivier010' },
+        { icon: <Linkedin size={20} />, href: 'https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/' },
         { icon: <Instagram size={20} />, href: 'https://instagram.com' },
         { icon: <Twitter size={20} />, href: 'https://twitter.com' },
     ];
