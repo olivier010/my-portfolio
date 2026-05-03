@@ -52,6 +52,7 @@ export default function BlogPost() {
   const { slug } = useParams()
   const navigate = useNavigate()
   const contentRef = useRef(null)
+  const shareButtonRef = useRef(null)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -126,6 +127,9 @@ export default function BlogPost() {
         break
       case 'facebook':
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank')
+        break
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank')
         break
       case 'copy':
         try {
@@ -265,7 +269,7 @@ export default function BlogPost() {
           <ArrowLeft className="w-5 h-5 mr-2" /> Back to blog
         </button>
 
-        <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden" ref={contentRef}>
+        <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-visible" ref={contentRef}>
           {post.fields.featuredImage && (
             <div className="h-96 overflow-hidden">
               <img
@@ -313,7 +317,7 @@ export default function BlogPost() {
             </div>
 
             {/* Engagement Bar */}
-            <div className="flex items-center justify-between gap-3 overflow-x-auto whitespace-nowrap pt-6 border-t border-gray-200 dark:border-gray-700 pb-1">
+            <div className="flex items-center justify-between gap-3 overflow-x-auto overflow-y-visible whitespace-nowrap pt-6 border-t border-gray-200 dark:border-gray-700 pb-1">
               <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                 <button
                   onClick={toggleLike}
@@ -341,6 +345,7 @@ export default function BlogPost() {
                 
                 <div className="relative">
                   <button
+                    ref={shareButtonRef}
                     onClick={() => setShowShareOptions(!showShareOptions)}
                     className="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 text-xs sm:text-sm font-medium shrink-0"
                   >
@@ -348,40 +353,43 @@ export default function BlogPost() {
                   </button>
                   
                   {showShareOptions && (
-                    <div className="absolute bottom-full mb-2 left-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[180px] sm:min-w-[200px]">
-                      <button
-                        onClick={() => handleShare('twitter')}
-                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                      >
-                        Share on Twitter
-                      </button>
+                    <div 
+                      style={{
+                        position: 'fixed',
+                        top: shareButtonRef.current ? shareButtonRef.current.getBoundingClientRect().bottom + 8 : 'auto',
+                        left: shareButtonRef.current ? shareButtonRef.current.getBoundingClientRect().left : 'auto',
+                      }}
+                      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 w-[120px] z-50 flex flex-col"
+                    >
                       <button
                         onClick={() => handleShare('linkedin')}
-                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
                       >
-                        Share on LinkedIn
-                      </button>
-                      <button
-                        onClick={() => handleShare('facebook')}
-                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                      >
-                        Share on Facebook
+                        LinkedIn
                       </button>
                       <button
                         onClick={() => handleShare('copy')}
-                        className="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center"
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
                       >
-                        {copiedLink ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 mr-2 text-green-600" />
-                            Copied!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 mr-2" />
-                            Copy Link
-                          </>
-                        )}
+                        {copiedLink ? 'Copied!' : 'Copy Link'}
+                      </button>
+                      <button
+                        onClick={() => handleShare('whatsapp')}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+                      >
+                        WhatsApp
+                      </button>
+                      <button
+                        onClick={() => handleShare('twitter')}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+                      >
+                        Twitter
+                      </button>
+                      <button
+                        onClick={() => handleShare('facebook')}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        Facebook
                       </button>
                     </div>
                   )}
