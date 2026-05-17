@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import AIChatbot from './components/AIChatbot';
+import ScrollControls from './components/ScrollControls';
 import ScrollReveal from './components/ScrollReveal';
 
 // Lazy load components for better performance
@@ -113,6 +114,7 @@ function AppContent() {
         
         <Footer />
       </Suspense>
+      <ScrollControls />
       <AIChatbot />
     </div>
   );
