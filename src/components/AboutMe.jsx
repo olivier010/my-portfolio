@@ -247,7 +247,7 @@ const AboutMe = () => {
                   <div className="text-xs opacity-90">Tech Stack</div>
                 </div>
                 <div className="text-center">
-                  <CountUp end={999} suffix="+" />
+                  <CountUp end={100} suffix="+" />
                   <div className="text-xs opacity-90">Coffee Cups</div>
                 </div>
               </div>
