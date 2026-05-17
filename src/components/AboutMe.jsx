@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapPin, Calendar, Award, Target } from 'lucide-react';
+import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapPin, Calendar, Award, Target, Github, Linkedin } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 
 const AboutMe = () => {
@@ -12,6 +12,44 @@ const AboutMe = () => {
     { name: 'AI/ML', level: 70, icon: <Cpu className="w-5 h-5" /> },
     { name: 'Database', level: 85, icon: <Database className="w-5 h-5" /> },
   ];
+
+  // Simple count-up component that starts when in view
+  const CountUp = ({ end, suffix = '', duration = 1200 }) => {
+    const ref = useRef();
+    const [value, setValue] = useState(0);
+    const started = useRef(false);
+
+    useEffect(() => {
+      const el = ref.current;
+      if (!el) return;
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !started.current) {
+            started.current = true;
+            const start = performance.now();
+            const from = 0;
+            const to = Number(end) || 0;
+
+            const tick = (now) => {
+              const t = Math.min(1, (now - start) / duration);
+              setValue(Math.floor(t * (to - from) + from));
+              if (t < 1) requestAnimationFrame(tick);
+              else setValue(to);
+            };
+
+            requestAnimationFrame(tick);
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      io.observe(el);
+      return () => io.disconnect();
+    }, [end, duration]);
+
+    return <div ref={ref} className="text-2xl font-bold">{value}{suffix}</div>;
+  };
 
   const experiences = [
     {
@@ -60,44 +98,34 @@ const AboutMe = () => {
             className="space-y-6"
           >
             {/* Profile Card */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300 min-h-[380px]"
+            >
               <div className="text-center mb-4">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  NSENGIYUMVA YVES Olivier
-                </h3>
-                <p className="text-blue-600 dark:text-blue-400 mb-4">Software Developer</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-0">Software Developer</h3>
               </div>
               
-              <div className="relative group w-24 h-24 mx-auto mb-6">
+              <div className="relative group w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-6">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                <div className="relative bg-white dark:bg-gray-800 p-0.5 rounded-full">
+                <div className="relative bg-white dark:bg-gray-800 p-1 rounded-full">
                   <img
                     src="/yvs.png"
-                    alt="NSENGIYUMVA YVES Olivier"
-                    className="w-full h-full rounded-full object-cover shadow-lg"
+                    alt="Profile"
+                    className="w-full h-full rounded-full object-cover shadow-lg block"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/96x96?text=Profile';
+                      e.target.src = 'https://via.placeholder.com/160?text=Profile';
                     }}
                   />
                 </div>
               </div>
               
-              <div className="space-y-3 border-t border-gray-100 dark:border-gray-700 pt-4">
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">oliviernsengiyumva010@gmail.com</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Kigali, Rwanda</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Calendar className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Available for work</span>
-                </div>
-              </div>
-            </div>
+              
+            </motion.div>
 
             {/* Bio Card */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
@@ -133,16 +161,19 @@ const AboutMe = () => {
                   <div key={index} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className="text-blue-600 dark:text-blue-400">{skill.icon}</span>
+                        <motion.span whileHover={{ scale: 1.05 }} className="text-blue-600 dark:text-blue-400">{skill.icon}</motion.span>
                         <span className="font-medium text-gray-900 dark:text-white text-sm">{skill.name}</span>
                       </div>
                       <span className="text-xs text-gray-500 dark:text-gray-400">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-blue-600 to-cyan-500 h-2 rounded-full transition-all duration-1000 ease-out" 
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
+                      <motion.div 
+                        className="bg-gradient-to-r from-blue-600 to-cyan-500 h-2 rounded-full"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.level}%` }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 1.2, ease: 'easeOut', delay: index * 0.08 }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -204,24 +235,35 @@ const AboutMe = () => {
               <h3 className="text-lg font-bold mb-4">Quick Stats</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold">3+</div>
+                  <CountUp end={3} suffix="+" />
                   <div className="text-xs opacity-90">Years Experience</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold">50+</div>
+                  <CountUp end={50} suffix="+" />
                   <div className="text-xs opacity-90">Projects Completed</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold">6</div>
+                  <CountUp end={6} />
                   <div className="text-xs opacity-90">Tech Stack</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold">∞</div>
+                  <CountUp end={999} suffix="+" />
                   <div className="text-xs opacity-90">Coffee Cups</div>
                 </div>
               </div>
             </div>
           </motion.div>
+        </div>
+        {/* Centered Download CV CTA */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-3">
+            <a href="/resume.pdf" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg" target="_blank" rel="noreferrer">
+              Download CV
+            </a>
+            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-3 bg-white/90 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-xl shadow border border-gray-200 dark:border-gray-700">
+              Hire Me
+            </a>
+          </div>
         </div>
       </div>
     </section>
