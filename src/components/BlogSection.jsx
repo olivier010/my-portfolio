@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { getEntries } from '../utils/contentful'
+import SectionHeading from './SectionHeading'
 
 // Simple cache implementation
 const postCache = new Map()
@@ -63,8 +64,8 @@ export default function BlogSection() {
   if (loading) {
     return (
       <section className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8">Latest Articles</h2>
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Latest Articles" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="animate-pulse">
@@ -92,7 +93,7 @@ export default function BlogSection() {
   return (
     <section id="blog" className="py-12">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8 text-center">Latest Articles</h2>
+        <SectionHeading title="Latest Articles" subtitle={null} id="blog" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {posts.map((post) => (
             <Link 
@@ -101,7 +102,7 @@ export default function BlogSection() {
               className="group"
               aria-label={`Read more about ${post.fields.title}`}
             >
-              <article className="h-full bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <article className="h-full bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
                 {post.fields.featuredImage && (
                   <div className="h-48 overflow-hidden relative">
                     <img

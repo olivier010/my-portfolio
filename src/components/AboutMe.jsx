@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapPin, Calendar, Award, Target } from 'lucide-react';
+import SectionHeading from './SectionHeading';
 
 const AboutMe = () => {
   const skills = [
@@ -44,10 +45,7 @@ const AboutMe = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-400 mb-4">
-            About Me
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full"></div>
+          <SectionHeading title="About Me" />
         </motion.div>
 
         {/* Three Column Layout */}
@@ -62,7 +60,7 @@ const AboutMe = () => {
             className="space-y-6"
           >
             {/* Profile Card */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
               <div className="text-center mb-4">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   NSENGIYUMVA YVES Olivier
@@ -102,7 +100,7 @@ const AboutMe = () => {
             </div>
 
             {/* Bio Card */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
               <div className="flex items-center space-x-2 mb-3">
                 <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">About Me</h3>
@@ -125,7 +123,7 @@ const AboutMe = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-6"
           >
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
               <div className="flex items-center space-x-2 mb-6">
                 <Award className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Technical Skills</h3>
@@ -152,7 +150,7 @@ const AboutMe = () => {
             </div>
 
             {/* Education */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
               <div className="flex items-center space-x-2 mb-4">
                 <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">Education</h3>
@@ -202,7 +200,7 @@ const AboutMe = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-gradient-to-br from-blue-600 to-cyan-500 p-6 rounded-2xl shadow-lg text-white">
+            <div className="bg-gradient-to-br from-blue-600 to-cyan-500 p-6 rounded-2xl shadow-lg text-white hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
               <h3 className="text-lg font-bold mb-4">Quick Stats</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">

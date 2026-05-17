@@ -124,9 +124,9 @@ const ContactSection = () => {
                     className="text-center mb-8 cursor-pointer"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
-                    <div className="inline-flex items-center space-x-2">
+                        <div className="inline-flex items-center space-x-2">
                         <MessageSquare className="w-5 h-5 text-blue-400" />
-                        <h2 className="text-2xl font-bold text-white">Get In Touch</h2>
+                        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-violet-300 dark:to-violet-500">Get In Touch</h2>
                         {isExpanded ? 
                             <ChevronUp className="w-5 h-5 text-blue-400" /> : 
                             <ChevronDown className="w-5 h-5 text-blue-400" />

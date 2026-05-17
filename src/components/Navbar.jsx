@@ -23,8 +23,8 @@ const Navbar = () => {
             setIsScrolled(window.scrollY > 10);
             
             // Determine which section is currently in view
-            const sections = ['home', 'about', 'projects', 'blog', 'contact'];
-            const scrollPosition = window.scrollY + 100; // Offset for navbar height
+            const sections = ['home', 'services', 'about', 'projects', 'blog', 'contact'];
+            const scrollPosition = window.scrollY + 120; // Offset for navbar height
             
             for (const section of sections) {
                 const element = document.getElementById(section);
@@ -73,8 +73,9 @@ const Navbar = () => {
 
     const navItems = [
         { name: 'Home', to: '/', isHash: false },
+        { name: 'Services', to: '#services', isHash: true },
         { name: 'About', to: '#about', isHash: true },
-        { name: 'Projects', to: '#projects', isHash: true },
+        { name: 'Portfolio', to: '#projects', isHash: true },
         { name: 'Blog', to: '#blog', isHash: true },
         { name: 'Contact', to: '#contact', isHash: true },
     ];
@@ -196,8 +197,22 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center">
+                    {/* Mobile controls */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <motion.button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                        >
+                            {theme === 'dark' ? (
+                                <Sun className="w-5 h-5" />
+                            ) : (
+                                <Moon className="w-5 h-5" />
+                            )}
+                        </motion.button>
+
                         <motion.button
                             onClick={() => setMenuOpen(!menuOpen)}
                             className="inline-flex flex-col justify-center items-center w-8 h-8 focus:outline-none"
