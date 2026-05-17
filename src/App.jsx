@@ -5,11 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import AIChatbot from './components/AIChatbot';
+import ScrollReveal from './components/ScrollReveal';
 
 // Lazy load components for better performance
 const Navbar = React.lazy(() => import('./components/Navbar'));
 const Home = React.lazy(() => import('./components/Home'));
 const AboutMe = React.lazy(() => import('./components/AboutMe'));
+const ServicesSection = React.lazy(() => import('./components/ServicesSection'));
 const HomeProjects = React.lazy(() => import('./components/HomeProjects'));
 const BlogSection = React.lazy(() => import('./components/BlogSection'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
@@ -65,11 +67,24 @@ function AppContent() {
             <Routes>
               <Route path="/" element={
                 <Suspense fallback={<LoadingFallback />}>
-                  <Home />
-                  <AboutMe />
-                  <HomeProjects />
-                  <BlogSection />
-                  <ContactSection />
+                  <ScrollReveal>
+                    <Home />
+                  </ScrollReveal>
+                  <ScrollReveal delay={0.05}>
+                    <ServicesSection />
+                  </ScrollReveal>
+                  <ScrollReveal delay={0.05}>
+                    <AboutMe />
+                  </ScrollReveal>
+                  <ScrollReveal delay={0.05}>
+                    <HomeProjects />
+                  </ScrollReveal>
+                  <ScrollReveal delay={0.05}>
+                    <BlogSection />
+                  </ScrollReveal>
+                  <ScrollReveal delay={0.05}>
+                    <ContactSection />
+                  </ScrollReveal>
                 </Suspense>
               } />
               <Route path="/blog" element={

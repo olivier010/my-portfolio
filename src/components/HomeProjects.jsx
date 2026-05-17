@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Github, ExternalLink, Calendar, Tag } from 'lucide-react';
+import SectionHeading from './SectionHeading';
 import { getProjects } from '../utils/projectService'
 import { format } from 'date-fns'
 
@@ -131,13 +132,8 @@ const HomeProjects = () => {
   return (
     <section id="projects" className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            My Projects
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            A collection of my recent work and projects
-          </p>
+        <div>
+          <SectionHeading title="My Projects" subtitle="A collection of my recent work and projects" id="projects" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -163,7 +159,7 @@ const HomeProjects = () => {
                     }
                   }}
                 >
-                  <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-200 flex flex-col">
+                  <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300 flex flex-col">
                     {project.fields.featuredImage?.fields?.file?.url ? (
                       <div className="h-36 overflow-hidden">
                         <img

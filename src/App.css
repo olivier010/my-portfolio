@@ -13,6 +13,25 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
