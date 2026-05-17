@@ -251,7 +251,7 @@ const ContactSection = () => {
                                                         <Github className="w-5 h-5" />
                                                     </a>
                                                     <a 
-                                                        href="https://linkedin.com/in/yourusername" 
+                                                        href="https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/" 
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         className="p-2 bg-white/10 hover:bg-blue-600/30 rounded-lg text-blue-200 hover:text-white transition-colors"
@@ -260,7 +260,7 @@ const ContactSection = () => {
                                                         <Linkedin className="w-5 h-5" />
                                                     </a>
                                                     <a 
-                                                        href="https://twitter.com/yves_olly_" 
+                                                        href="https://x.com/yves_olly_foex" 
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         className="p-2 bg-white/10 hover:bg-blue-600/30 rounded-lg text-blue-200 hover:text-white transition-colors"
