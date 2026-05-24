@@ -4,6 +4,9 @@ import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapP
 import SectionHeading from './SectionHeading';
 
 const AboutMe = () => {
+  const MotionDiv = motion.div;
+  const MotionSpan = motion.span;
+
   const skills = [
     { name: 'Frontend', level: 90, icon: <Layout className="w-5 h-5" /> },
     { name: 'Backend', level: 50, icon: <Server className="w-5 h-5" /> },
@@ -76,7 +79,7 @@ const AboutMe = () => {
     <section id="about" className="py-20 bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div 
+        <MotionDiv 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -84,25 +87,25 @@ const AboutMe = () => {
           className="text-center mb-16"
         >
           <SectionHeading title="About Me" />
-        </motion.div>
+        </MotionDiv>
 
         {/* Three Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Column 1 - Profile & Personal Info */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <MotionDiv 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             className="space-y-6"
           >
             {/* Profile Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              <MotionDiv
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
               className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300 min-h-[380px]"
             >
               <div className="text-center mb-4">
@@ -125,7 +128,7 @@ const AboutMe = () => {
               </div>
               
               
-            </motion.div>
+            </MotionDiv>
 
             {/* Bio Card */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
@@ -141,10 +144,10 @@ const AboutMe = () => {
                My goal is to grow into a professional software engineer who creates impactful and efficient digital solutions.
               </p>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* Column 2 - Skills */}
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -161,13 +164,13 @@ const AboutMe = () => {
                   <div key={index} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <motion.span whileHover={{ scale: 1.05 }} className="text-blue-600 dark:text-blue-400">{skill.icon}</motion.span>
+                        <MotionSpan whileHover={{ scale: 1.05 }} className="text-blue-600 dark:text-blue-400">{skill.icon}</MotionSpan>
                         <span className="font-medium text-gray-900 dark:text-white text-sm">{skill.name}</span>
                       </div>
                       <span className="text-xs text-gray-500 dark:text-gray-400">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <motion.div 
+                      <MotionDiv 
                         className="bg-gradient-to-r from-blue-600 to-cyan-500 h-2 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.level}%` }}
@@ -200,10 +203,10 @@ const AboutMe = () => {
                 
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* Column 3 - Experience */}
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -252,7 +255,7 @@ const AboutMe = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
         {/* Centered Download CV CTA */}
         <div className="mt-8 text-center">
