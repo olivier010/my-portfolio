@@ -37,3 +37,4 @@ export function setPageSEO({ title, description, canonicalPath }) {
     }
   }
 }
+
