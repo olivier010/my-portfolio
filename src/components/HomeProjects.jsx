@@ -1,9 +1,9 @@
-// src/components/Projects.jsx
+// src/components/HomeProjects.jsx
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Github, ExternalLink, Calendar, Tag } from 'lucide-react';
-import SectionHeading from './SectionHeading';
+import { Github, ExternalLink, Calendar, Tag } from 'lucide-react'
+import SectionHeading from './SectionHeading'
 import { getProjects } from '../utils/projectService'
 import { format } from 'date-fns'
 
@@ -11,55 +11,33 @@ const HomeProjects = () => {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        console.log('Fetching projects...');
+        console.log('Fetching projects...')
         const projects = await getProjects({
           limit: 6,
           include: 2  // Include linked assets and entries
-        });
+        })
         
-        console.log('Projects from Contentful:', projects);
+        console.log('Projects from Contentful:', projects)
         
         if (projects && projects.length > 0) {
-          console.log('Raw projects data:', projects);
+          console.log('Raw projects data:', projects)
           
           const formattedProjects = projects.map(project => {
-            // Log all fields available in the project
-            console.log('Project fields:', Object.keys(project.fields));
-            console.log('Project data:', {
-              title: project.fields.title,
-              description: project.fields.description,
-              technologies: project.fields.technologies,
-              featuredImage: project.fields.featuredImage ? 'Exists' : 'Missing',
-              gitHubUrl: project.fields.gitHubUrl,
-              liveDemoUrl: project.fields.liveDemoUrl
-            });
-            // Get the image URL if it exists
-            let imageUrl = null;
-            const imageField = project.fields.featuredImage;
-            console.log('Project image data:', imageField);
+            let imageUrl = null
+            const imageField = project.fields.featuredImage
             
             if (imageField) {
-              console.log('Image object structure:', {
-                hasFields: !!imageField.fields,
-                hasFile: !!imageField.fields?.file,
-                hasUrl: !!imageField.fields?.file?.url,
-                url: imageField.fields?.file?.url
-              });
-              
               if (imageField.fields?.file?.url) {
                 imageUrl = imageField.fields.file.url.startsWith('//') 
                   ? `https:${imageField.fields.file.url}`
-                  : imageField.fields.file.url;
-                console.log('Final image URL:', imageUrl);
+                  : imageField.fields.file.url
               }
             }
             
-            // Return the formatted project
             return {
               ...project,
               fields: {
@@ -70,24 +48,23 @@ const HomeProjects = () => {
                   } 
                 } : null
               }
-            };
-          });
+            }
+          })
           
-          console.log('Formatted projects:', formattedProjects);
-          setProjects(formattedProjects);
+          setProjects(formattedProjects)
         } else {
-          console.warn('No projects found in Contentful');
-          setError('No projects found. Please add some projects in Contentful.');
+          console.warn('No projects found in Contentful')
+          setError('No projects found. Please add some projects in Contentful.')
         }
       } catch (err) {
-        console.error('Error fetching projects:', err);
-        setError('Failed to load projects. Please check your console for more details.');
+        console.error('Error fetching projects:', err)
+        setError('Failed to load projects. Please check your console for more details.')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchProjects();
+    fetchProjects()
   }, [])
 
   if (loading) {
@@ -121,13 +98,13 @@ const HomeProjects = () => {
 
   // Format date if available
   const formatProjectDate = (dateString) => {
-    if (!dateString) return null;
+    if (!dateString) return null
     try {
-      return format(new Date(dateString), 'MMM yyyy');
+      return format(new Date(dateString), 'MMM yyyy')
     } catch (e) {
-      return null;
+      return null
     }
-  };
+  }
 
   return (
     <section id="projects" className="py-16 bg-gray-50 dark:bg-gray-900">
@@ -147,17 +124,10 @@ const HomeProjects = () => {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 className="group"
               >
-                <div
-                  className="block h-full cursor-pointer"
-                  role="link"
-                  tabIndex={0}
-                  onClick={() => navigate(`/projects/${project.fields.slug}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      navigate(`/projects/${project.fields.slug}`)
-                    }
-                  }}
+                <Link
+                  to={`/projects/${project.fields.slug}`}
+                  className="block h-full"
+                  aria-label={`View details of project ${project.fields.title}`}
                 >
                   <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300 flex flex-col">
                     {project.fields.featuredImage?.fields?.file?.url ? (
@@ -168,12 +138,12 @@ const HomeProjects = () => {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                           onError={(e) => {
-                            e.target.style.display = 'none';
+                            e.target.style.display = 'none'
                             e.target.parentElement.innerHTML = (
                               '<div class="h-full w-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">' +
                               '<span class="text-xs text-gray-400">No image</span>' +
                               '</div>'
-                            );
+                            )
                           }}
                         />
                       </div>
@@ -250,7 +220,7 @@ const HomeProjects = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))
           ) : (

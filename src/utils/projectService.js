@@ -20,11 +20,13 @@ if (!spaceId || !accessToken) {
   console.log('VITE_CONTENTFUL_ENVIRONMENT=master (optional)');
 }
 
-const client = createClient({
-  space: spaceId,
-  accessToken: accessToken,
-  environment: environment
-});
+const client = spaceId && accessToken
+  ? createClient({
+      space: spaceId,
+      accessToken,
+      environment: environment
+    })
+  : null;
 
 // Cache for content types
 let contentTypesCache = null;
@@ -34,6 +36,10 @@ const getContentTypes = async () => {
   if (contentTypesCache) return contentTypesCache;
   
   try {
+    if (!client) {
+      throw new Error('Contentful is not configured. Set VITE_CONTENTFUL_SPACE_ID and VITE_CONTENTFUL_ACCESS_TOKEN.');
+    }
+
     const response = await client.getContentTypes();
     contentTypesCache = response.items;
     console.log('✅ Successfully connected to Contentful');

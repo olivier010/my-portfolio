@@ -20,7 +20,6 @@ const Home = () => {
     const renderHeading = () => {
         const text = fullText.substring(0, displayedChars);
         const parts = [];
-        let currentIndex = 0;
 
         // Hi, I'm 
         if (text.includes("Hi, I'm")) {
@@ -29,7 +28,6 @@ const Home = () => {
                     Hi, I'm 
                 </span>
             );
-            currentIndex = 8;
         }
 
         // Yves
@@ -42,7 +40,6 @@ const Home = () => {
                     </span>
                 );
             }
-            currentIndex = 13;
         }
 
         // Digital 
@@ -55,7 +52,6 @@ const Home = () => {
                     </span>
                 );
             }
-            currentIndex = 20;
         }
 
         // Innovator
@@ -86,8 +82,10 @@ const Home = () => {
                 {/* Left Column - Text Content */}
                 <div className="flex flex-col justify-center">
                     <h1 className="text-5xl md:text-6xl font-bold text-gray-800 dark:text-white mb-6 leading-tight min-h-[120px]">
-                        {renderHeading()}
-                        <span className="inline-block w-1 h-12 md:h-16 ml-2 bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
+                        {/* Screen readers & search engine crawlers always see the full heading immediately */}
+                        <span className="sr-only">Hi, I'm Yves Digital Innovator</span>
+                        <span aria-hidden="true">{renderHeading()}</span>
+                        <span className="inline-block w-1 h-12 md:h-16 ml-2 bg-blue-600 dark:bg-blue-400 animate-pulse" aria-hidden="true"></span>
                     </h1>
                     
                     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">

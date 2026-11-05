@@ -3,25 +3,81 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yves Olivier NSENGIYUMVA | Software Developer Portfolio</title>
     <meta
       name="description"
-      content="Personal portfolio showcasing my projects, skills, and experience in software development."
+      content="Portfolio of Yves Olivier NSENGIYUMVA (Yves Foex), a software developer specializing in React, frontend engineering, and modern web applications."
     />
-    <meta name="theme-color" content="#3b82f6" />
-    <meta name="description" content="Portfolio of Yves Olivier NSENGIYUMVA, a software developer specializing in React, frontend, and modern web applications." />
-
-    <meta name="keywords" content="Yves Olivier NSENGIYUMVA, React Developer, Rwanda Developer, Frontend Developer, Portfolio" />
-    <meta name="robots" content="index, follow" />
-
+    <meta name="keywords" content="Yves Olivier NSENGIYUMVA, Yves Foex, React Developer, Frontend Developer, Web Developer Rwanda, Software Engineer Portfolio" />
     <meta name="author" content="Yves Olivier NSENGIYUMVA" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3b82f6" />
+
+    <!-- Canonical URL matching Netlify standard redirection -->
+    <link rel="canonical" href="https://yvesfoex.me/" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yvesfoex.me" />
+    <meta property="og:url" content="https://yvesfoex.me/" />
+    <meta property="og:title" content="Yves Olivier NSENGIYUMVA | Software Developer" />
+    <meta property="og:description" content="Portfolio of Yves Olivier NSENGIYUMVA, a software developer specializing in React, frontend engineering, and modern web applications." />
+    <meta property="og:image" content="https://yvesfoex.me/yvs.png" />
+    <meta property="og:site_name" content="Yves Olivier NSENGIYUMVA Portfolio" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="canonical" href="https://yvesfoex.me" />
-    <link rel="icon" type="image/png" href="./public/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="twitter:url" content="https://yvesfoex.me/" />
+    <meta name="twitter:title" content="Yves Olivier NSENGIYUMVA | Software Developer" />
+    <meta name="twitter:description" content="Portfolio of Yves Olivier NSENGIYUMVA, a software developer specializing in React, frontend engineering, and modern web applications." />
+    <meta name="twitter:image" content="https://yvesfoex.me/yvs.png" />
+
+    <!-- Favicons and Manifest -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>My Portfolio | Software Developer</title>
+
+    <!-- Structured Data (JSON-LD) for Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://yvesfoex.me/#person",
+          "name": "Yves Olivier NSENGIYUMVA",
+          "alternateName": ["Yves Foex", "Yves Olivier", "olivier010"],
+          "url": "https://yvesfoex.me/",
+          "image": "https://yvesfoex.me/yvs.png",
+          "jobTitle": "Software Developer",
+          "description": "Software developer specializing in React, frontend engineering, and modern web applications.",
+          "sameAs": [
+            "https://github.com/olivier010",
+            "https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/"
+          ],
+          "knowsAbout": [
+            "JavaScript",
+            "TypeScript",
+            "React",
+            "Tailwind CSS",
+            "Frontend Development",
+            "Web Development",
+            "Full Stack Development"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://yvesfoex.me/#website",
+          "url": "https://yvesfoex.me/",
+          "name": "Yves Olivier NSENGIYUMVA Portfolio",
+          "description": "Personal portfolio of Yves Olivier NSENGIYUMVA showcasing projects, skills, and experience in software development.",
+          "publisher": {
+            "@id": "https://yvesfoex.me/#person"
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- Preload critical CSS -->
     <style>
       /* Critical CSS to prevent layout shift */
@@ -43,7 +99,24 @@
     </style>
   </head>
   <body>
+    <!-- Fallback content for search engine bots and non-JS clients -->
+    <noscript>
+      <header style="padding: 2rem; max-width: 800px; margin: 0 auto; font-family: sans-serif; line-height: 1.6;">
+        <h1>Yves Olivier NSENGIYUMVA - Software Developer</h1>
+        <p>I craft transformative, timely, and innovative technology solutions that empower businesses and communities. Specializing in React, Tailwind CSS, frontend development, and modern web applications.</p>
+        <nav>
+          <ul>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#blog">Blog Articles</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+    </noscript>
+
     <div id="root"></div>
+
     <!-- Preload critical resources -->
     <link rel="preload" as="style" href="/src/index.css" />
     <link rel="stylesheet" href="/src/index.css" />
@@ -56,6 +129,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Preload key requests -->
-    <link rel="preload" as="image" href="/yvs.jpg" />
+    <link rel="preload" as="image" href="/yvs.png" />
   </body>
 </html>
