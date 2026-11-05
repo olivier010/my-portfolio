@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import AIChatbot from './components/AIChatbot';
 import ScrollControls from './components/ScrollControls';
 import ScrollReveal from './components/ScrollReveal';
+import { setPageSEO } from './utils/seo';
 
 // Lazy load components for better performance
 const Navbar = React.lazy(() => import('./components/Navbar'));
@@ -38,6 +39,14 @@ const ScrollToTop = () => {
       top: 0,
       behavior: 'smooth'
     });
+
+    if (pathname === '/') {
+      setPageSEO({
+        title: 'Yves Olivier NSENGIYUMVA | Software Developer Portfolio',
+        description: 'Portfolio of Yves Olivier NSENGIYUMVA (Yves Foex), a software developer specializing in React, frontend engineering, and modern web applications.',
+        canonicalPath: '/'
+      });
+    }
   }, [pathname]);
 
   return null;

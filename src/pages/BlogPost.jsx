@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { ArrowLeft, Clock, Calendar, Tag, Share2, Bookmark, MessageSquare, Heart, ThumbsUp, Eye, Copy, Check } from 'lucide-react'
 import { getEntries } from '../utils/contentful'
+import { setPageSEO } from '../utils/seo'
 
 const extractRichTextText = (node) => {
   if (!node) return ''
@@ -64,6 +65,11 @@ export default function BlogPost() {
         
         if (posts.length > 0) {
           setPost(posts[0])
+          setPageSEO({
+            title: `${posts[0].fields.title} | Yves Olivier NSENGIYUMVA`,
+            description: posts[0].fields.excerpt || `Read ${posts[0].fields.title} on Yves Olivier NSENGIYUMVA's blog.`,
+            canonicalPath: `/blog/${slug}`
+          })
           setRelatedPosts(related)
           
           // Initialize likes and views from localStorage

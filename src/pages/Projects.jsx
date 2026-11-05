@@ -1,15 +1,22 @@
 // src/pages/Projects.jsx
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Github, ExternalLink, Calendar, Code, Tag } from 'lucide-react'
+import { Github, ExternalLink, Calendar, Tag } from 'lucide-react'
 import { getProjects } from '../utils/projectService'
 import { format } from 'date-fns'
+import { setPageSEO } from '../utils/seo'
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setPageSEO({
+      title: 'Projects | Yves Olivier NSENGIYUMVA',
+      description: 'Browse the complete collection of web applications, full-stack projects, and software solutions built by Yves Olivier NSENGIYUMVA.',
+      canonicalPath: '/projects'
+    })
+
     const fetchProjects = async () => {
       try {
         console.log('Fetching projects...')
@@ -18,13 +25,6 @@ const ProjectsPage = () => {
         
         // Process projects to ensure image URLs are correct
         const processedProjects = projects.map(project => {
-          // Log the project data for debugging
-          console.log('Project data:', {
-            title: project.fields.title,
-            hasFeaturedImage: !!project.fields.featuredImage,
-            imageUrl: project.fields.featuredImage?.fields?.file?.url
-          })
-          
           return project;
         });
         
@@ -91,6 +91,7 @@ const ProjectsPage = () => {
               <Link
                 to={`/projects/${project.fields.slug}`}
                 className="block h-full"
+                aria-label={`View details of project ${project.fields.title}`}
               >
                 <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-200 flex flex-col">
                   {project.fields.featuredImage?.fields?.file?.url ? (

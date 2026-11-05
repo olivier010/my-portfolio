@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Github, ExternalLink } from 'lucide-react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { getProjectBySlug } from '../utils/projectService'
+import { setPageSEO } from '../utils/seo'
 
 const ProjectDetail = () => {
   const { slug } = useParams()
@@ -15,6 +16,13 @@ const ProjectDetail = () => {
       try {
         const project = await getProjectBySlug(slug)
         setProject(project)
+        if (project?.fields?.title) {
+          setPageSEO({
+            title: `${project.fields.title} | Yves Olivier NSENGIYUMVA`,
+            description: project.fields.description || `Explore ${project.fields.title}, built by Yves Olivier NSENGIYUMVA.`,
+            canonicalPath: `/projects/${slug}`
+          })
+        }
       } catch (error) {
         console.error('Error fetching project:', error)
       } finally {

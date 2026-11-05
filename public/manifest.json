@@ -1,20 +1,20 @@
 {
-  "name": "My Portfolio",
-  "short_name": "Portfolio",
-  "description": "Personal portfolio showcasing my projects and skills",
+  "name": "Yves Olivier NSENGIYUMVA Portfolio",
+  "short_name": "Yves",
+  "description": "Portfolio of Yves Olivier NSENGIYUMVA, Software Developer",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "/favicon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "/favicon.png",
       "sizes": "512x512",
       "type": "image/png"
     }

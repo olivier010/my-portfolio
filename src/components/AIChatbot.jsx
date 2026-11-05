@@ -1,7 +1,7 @@
 // src/components/AIChatbot.jsx
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Sparkles, Minimize2, Maximize2 } from 'lucide-react'
-import { getChatResponse } from '../services/openai'
+import { getChatResponse, getPortfolioData } from '../services/openai'
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,7 +52,6 @@ export default function AIChatbot() {
   const loadDynamicSuggestions = async () => {
     try {
       // Import and call the portfolio data function
-      const { getPortfolioData } = await import('../services/openai')
       const portfolioData = await getPortfolioData()
       
       const dynamicSuggestions = []

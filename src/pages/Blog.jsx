@@ -3,7 +3,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { getEntries } from '../utils/contentful'
 import { motion } from 'framer-motion'
-import { Calendar, ArrowRight, Clock } from 'lucide-react'
+import { Calendar, ArrowRight } from 'lucide-react'
+import { setPageSEO } from '../utils/seo'
 
 // Simple cache implementation
 const postCache = new Map()
@@ -43,6 +44,11 @@ export default function Blog() {
   }, [])
 
   useEffect(() => {
+    setPageSEO({
+      title: 'Blog & Articles | Yves Olivier NSENGIYUMVA',
+      description: 'Thoughts, tutorials, and insights about modern web development, React, and technology by Yves Olivier NSENGIYUMVA.',
+      canonicalPath: '/blog'
+    })
     fetchPosts()
   }, [fetchPosts])
 
