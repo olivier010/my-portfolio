@@ -1,273 +1,459 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Code, Layout, Paintbrush, Cpu, Database, Server, Smartphone, Mail, MapPin, Calendar, Award, Target, Github, Linkedin } from 'lucide-react';
+// src/components/AboutMe.jsx
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Code, Layout, Paintbrush, Cpu, Database, Server, 
+  Smartphone, Mail, MapPin, Calendar, Award, Target, 
+  Github, Linkedin, Terminal, Sparkles, Check, Send, 
+  BookOpen, Briefcase, Zap, CornerDownLeft 
+} from 'lucide-react';
 import SectionHeading from './SectionHeading';
+import { playClick, playPop, playSuccess } from '../utils/sound';
+
+const skillsData = [
+  { name: 'React 19 & Next.js', level: 95, category: 'Frontend', icon: Layout },
+  { name: 'TypeScript & JavaScript', level: 92, category: 'Frontend', icon: Code },
+  { name: 'Tailwind CSS & Framer Motion', level: 96, category: 'Frontend', icon: Paintbrush },
+  { name: 'Node.js & Express', level: 86, category: 'Backend', icon: Server },
+  { name: 'PostgreSQL & MongoDB', level: 84, category: 'Backend', icon: Database },
+  { name: 'AI Integration (OpenAI/RAG)', level: 82, category: 'AI & Data', icon: Cpu },
+  { name: 'REST & GraphQL APIs', level: 88, category: 'Backend', icon: Zap },
+  { name: 'Git & CI/CD DevOps', level: 85, category: 'Tools', icon: Terminal },
+];
+
+const experiences = [
+  {
+    role: 'Full-Stack Software Developer',
+    company: 'Independent & High-Impact Client Projects',
+    period: '2023 - Present',
+    description: 'Architecting scalable web applications, real-time dashboards, and custom client solutions utilizing React 19, TypeScript, and Node.js with rigorous performance benchmarks.'
+  },
+  {
+    role: 'Frontend & UI/UX Engineer',
+    company: 'Digital Solutions Lab',
+    period: '2022 - 2023',
+    description: 'Designed and built modern component systems, responsive landing pages, and interactive web tools with zero-layout-shift accessibility standards.'
+  },
+  {
+    role: 'Information Technology Scholar',
+    company: 'RP Karongi College',
+    period: '2024 - Present',
+    description: 'Pursuing an Advanced Diploma in Information Technology, focusing on software engineering, distributed computing, and data structures.'
+  }
+];
 
 const AboutMe = () => {
-  const MotionDiv = motion.div;
-  const MotionSpan = motion.span;
+  const [activeTab, setActiveTab] = useState('skills'); // 'skills', 'terminal', 'experience'
+  const [activeSkillCategory, setActiveSkillCategory] = useState('All');
+  
+  // Terminal state
+  const [terminalHistory, setTerminalHistory] = useState([
+    { type: 'system', text: "Welcome to Yves's Interactive CLI v2.4 (React 19 Environment)" },
+    { type: 'system', text: "Type 'help' or click any quick command below to begin." },
+  ]);
+  const [terminalInput, setTerminalInput] = useState('');
+  const terminalEndRef = useRef(null);
 
-  const skills = [
-    { name: 'Frontend', level: 90, icon: <Layout className="w-5 h-5" /> },
-    { name: 'Backend', level: 50, icon: <Server className="w-5 h-5" /> },
-    { name: 'UI/UX Design', level: 95, icon: <Paintbrush className="w-5 h-5" /> },
-    { name: 'Mobile Dev', level: 40, icon: <Smartphone className="w-5 h-5" /> },
-    { name: 'AI/ML', level: 70, icon: <Cpu className="w-5 h-5" /> },
-    { name: 'Database', level: 85, icon: <Database className="w-5 h-5" /> },
-  ];
+  useEffect(() => {
+    if (activeTab === 'terminal') {
+      terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [terminalHistory, activeTab]);
 
-  // Simple count-up component that starts when in view
-  const CountUp = ({ end, suffix = '', duration = 1200 }) => {
-    const ref = useRef();
-    const [value, setValue] = useState(0);
-    const started = useRef(false);
+  const handleCommand = (cmdText) => {
+    const cmd = (cmdText || terminalInput).trim().toLowerCase();
+    if (!cmd) return;
 
-    useEffect(() => {
-      const el = ref.current;
-      if (!el) return;
+    playClick();
+    const newHistory = [...terminalHistory, { type: 'user', text: `$ ${cmd}` }];
 
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !started.current) {
-            started.current = true;
-            const start = performance.now();
-            const from = 0;
-            const to = Number(end) || 0;
-
-            const tick = (now) => {
-              const t = Math.min(1, (now - start) / duration);
-              setValue(Math.floor(t * (to - from) + from));
-              if (t < 1) requestAnimationFrame(tick);
-              else setValue(to);
-            };
-
-            requestAnimationFrame(tick);
-            io.disconnect();
-          }
+    switch (cmd) {
+      case 'help':
+        newHistory.push({
+          type: 'output',
+          text: "Available commands:\n  • about        - Summary of Yves's mission & background\n  • skills       - List technical proficiencies\n  • contact      - Reach out directly\n  • github       - View GitHub repository portfolio\n  • sudo hire    - Trigger VIP hiring sequence\n  • clear        - Clear the terminal screen"
         });
-      }, { threshold: 0.3 });
+        break;
+      case 'about':
+      case 'cat bio.txt':
+        newHistory.push({
+          type: 'output',
+          text: "Yves Olivier NSENGIYUMVA (Yves Foex)\nFull-Stack Developer based in Kigali, Rwanda.\nPassionate about building ultra-fast React interfaces, scalable APIs, and intelligent AI-enhanced tools."
+        });
+        break;
+      case 'skills':
+      case 'skills --all':
+        newHistory.push({
+          type: 'output',
+          text: "Core Stack:\n[Frontend]: React 19, TypeScript, Tailwind CSS, Framer Motion, Next.js\n[Backend]:  Node.js, Express, PostgreSQL, MongoDB, Java\n[AI/Cloud]: OpenAI API, RAG, Docker, Vercel, Netlify"
+        });
+        break;
+      case 'contact':
+        newHistory.push({
+          type: 'output',
+          text: "Email: oliviernsengiyumva010@gmail.com\nGitHub: https://github.com/olivier010\nLinkedIn: https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/"
+        });
+        break;
+      case 'github':
+        window.open('https://github.com/olivier010', '_blank');
+        newHistory.push({ type: 'output', text: "Opening github.com/olivier010 in a new tab..." });
+        break;
+      case 'sudo hire':
+        playSuccess();
+        newHistory.push({
+          type: 'output',
+          text: "ACCESS GRANTED: Excellent decision! Let's build something extraordinary together.\nRedirecting to contact form..."
+        });
+        setTimeout(() => {
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        }, 1000);
+        break;
+      case 'clear':
+        setTerminalHistory([]);
+        setTerminalInput('');
+        return;
+      default:
+        newHistory.push({
+          type: 'error',
+          text: `Command not found: '${cmd}'. Type 'help' for available commands.`
+        });
+    }
 
-      io.observe(el);
-      return () => io.disconnect();
-    }, [end, duration]);
-
-    return <div ref={ref} className="text-2xl font-bold">{value}{suffix}</div>;
+    setTerminalHistory(newHistory);
+    setTerminalInput('');
   };
 
-  const experiences = [
-    {
-      role: 'Full Stack Developer',
-      company: 'Tech Solutions Inc.',
-      period: '2022 - Present',
-      description: 'Developing and maintaining web applications using modern technologies.'
-    },
-    {
-      role: 'UI/UX Designer',
-      company: 'Creative Agency',
-      period: '2020 - 2022',
-      description: 'Designed user interfaces and experiences for various clients.'
-    },
-    {
-      role: 'Software Engineer Intern',
-      company: 'Innovate Tech',
-      period: '2019 - 2020',
-      description: 'Assisted in developing and testing software applications.'
-    }
-  ];
+  const categories = ['All', 'Frontend', 'Backend', 'AI & Data', 'Tools'];
+  const filteredSkills = skillsData.filter(s => 
+    activeSkillCategory === 'All' ? true : s.category === activeSkillCategory
+  );
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <MotionDiv 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <SectionHeading title="About Me" />
-        </MotionDiv>
+    <section 
+      id="about" 
+      className="py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
+    >
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
+        
+        {/* Section Heading */}
+        <div className="mb-16">
+          <SectionHeading
+            eyebrow="Developer Journey"
+            title={<>Engineering with <span className="text-primary-500">Purpose</span> &amp; Precision</>}
+            subtitle="The bridge between clean code architecture, intuitive product design, and continuous technical evolution."
+          />
+        </div>
 
-        {/* Three Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 2-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
-          {/* Column 1 - Profile & Personal Info */}
-          <MotionDiv 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            {/* Profile Card */}
-              <MotionDiv
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300 min-h-[380px]"
-            >
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-0">Software Developer</h3>
-              </div>
-              
-              <div className="relative group w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-6">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                <div className="relative bg-white dark:bg-gray-800 p-1 rounded-full">
+          {/* Left Column (5 cols): Profile & Story */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* Profile Highlight Card */}
+            <div className="p-7 rounded-2xl bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-xl">
+              <div className="flex items-center gap-5 mb-6">
+                <div className="relative group w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-primary-500/30 shrink-0">
                   <img
                     src="/yvs.png"
-                    alt="Profile"
-                    className="w-full h-full rounded-full object-cover shadow-lg block"
+                    alt="Yves Olivier NSENGIYUMVA"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/160?text=Profile';
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
                     }}
                   />
+                  <div className="absolute inset-0 bg-primary-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    Yves Olivier NSENGIYUMVA
+                  </h3>
+                  <p className="text-sm text-primary-600 dark:text-primary-400 font-mono">
+                    Full-Stack &amp; Frontend Engineer
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                    Kigali, Rwanda (CAT / UTC+2)
+                  </p>
                 </div>
               </div>
-              
-              
-            </MotionDiv>
 
-            {/* Bio Card */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
-              <div className="flex items-center space-x-2 mb-3">
-                <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">About Me</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-               I am NSENGIYUMVA Yves Olivier, an Information Technology student passionate about software development and digital innovation.
-               I specialize in building responsive web applications using React.js and Tailwind CSS, with backend experience in Java and PHP.
-               I enjoy transforming ideas into practical solutions that solve real-world problems.
-               As a fast learner and problem-solver, I am continuously improving my technical skills and exploring modern technologies to build scalable and user-friendly applications.
-               My goal is to grow into a professional software engineer who creates impactful and efficient digital solutions.
+              {/* Bio summary */}
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                I specialize in building responsive, accessible, and high-velocity web platforms. With a strong foundation in modern JavaScript/TypeScript, React 19, and scalable server architectures, I turn complex business requirements into elegant, tactile digital experiences.
               </p>
-            </div>
-          </MotionDiv>
 
-          {/* Column 2 - Skills */}
-          <MotionDiv 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
-          >
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
-              <div className="flex items-center space-x-2 mb-6">
-                <Award className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Technical Skills</h3>
-              </div>
-              <div className="space-y-4">
-                {skills.map((skill, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <MotionSpan whileHover={{ scale: 1.05 }} className="text-blue-600 dark:text-blue-400">{skill.icon}</MotionSpan>
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">{skill.name}</span>
-                      </div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <MotionDiv 
-                        className="bg-gradient-to-r from-blue-600 to-cyan-500 h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 1.2, ease: 'easeOut', delay: index * 0.08 }}
-                      />
-                    </div>
-                  </div>
-                ))}
+              {/* Quick links & socials */}
+              <div className="flex items-center gap-3 pt-5 border-t border-gray-200 dark:border-white/10">
+                <a
+                  href="https://github.com/olivier010"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => playClick()}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                  <span>GitHub</span>
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => playClick()}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-colors"
+                >
+                  <Linkedin className="w-4 h-4 text-primary-500" />
+                  <span>LinkedIn</span>
+                </a>
+
+                <button
+                  onClick={() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    playClick();
+                  }}
+                  className="inline-flex items-center gap-1.5 ml-auto text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Contact</span>
+                </button>
               </div>
             </div>
 
-            {/* Education */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300">
-              <div className="flex items-center space-x-2 mb-4">
-                <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Education</h3>
+            {/* Education & Core Values */}
+            <div className="p-7 rounded-2xl bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-xl">
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen className="w-5 h-5 text-primary-500" />
+                <h4 className="text-base font-bold text-gray-900 dark:text-white">Education &amp; Training</h4>
               </div>
+
               <div className="space-y-3">
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Advanced Deploma in Information Technology</h4>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">RP KARONGI COLLEGE</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">2024 - Present</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Advanced Deploma in Information Technology</h4>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">RP KARONGI COLLEGE</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">2024 - Present</p>
-                </div>
-                
-              </div>
-            </div>
-          </MotionDiv>
-
-          {/* Column 3 - Experience */}
-          <MotionDiv 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="space-y-6"
-          >
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center space-x-2 mb-6">
-                <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Experience</h3>
-              </div>
-              <div className="space-y-6">
-                {experiences.map((exp, index) => (
-                  <div key={index} className="relative pl-6 border-l-2 border-blue-500/30">
-                    <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-[7px] top-1"></div>
-                    <div className="space-y-2">
-                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">{exp.role}</h4>
-                      <p className="text-blue-600 dark:text-blue-400 font-medium text-xs">{exp.company}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{exp.period}</p>
-                      <p className="text-gray-600 dark:text-gray-300 text-xs leading-relaxed">{exp.description}</p>
-                    </div>
+                  <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Advanced Diploma in Information Technology
                   </div>
-                ))}
+                  <div className="text-xs text-primary-600 dark:text-primary-400 font-medium">
+                    RP Karongi College
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    2024 - Present • Software Engineering, Computer Networks &amp; Databases
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Quick Stats */}
-            <div className="bg-gradient-to-br from-blue-600 to-cyan-500 p-6 rounded-2xl shadow-lg text-white hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
-              <h3 className="text-lg font-bold mb-4">Quick Stats</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <CountUp end={3} suffix="+" />
-                  <div className="text-xs opacity-90">Years Experience</div>
+          </div>
+
+          {/* Right Column (7 cols): Interactive CLI & Technical Skills Radar */}
+          <div className="lg:col-span-7">
+            <div className="rounded-2xl bg-white dark:bg-[#0c0f18] border border-gray-200 dark:border-white/10 shadow-xl overflow-hidden backdrop-blur-xl">
+              
+              {/* Window Header & Tabs */}
+              <div className="flex items-center justify-between px-5 py-3.5 bg-gray-100/80 dark:bg-white/[0.04] border-b border-gray-200 dark:border-white/10">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <span className="hidden sm:inline-block ml-2 text-xs font-mono text-gray-500 dark:text-gray-400">
+                    yves@workstation:~
+                  </span>
                 </div>
-                <div className="text-center">
-                  <CountUp end={50} suffix="+" />
-                  <div className="text-xs opacity-90">Projects Completed</div>
-                </div>
-                <div className="text-center">
-                  <CountUp end={6} />
-                  <div className="text-xs opacity-90">Tech Stack</div>
-                </div>
-                <div className="text-center">
-                  <CountUp end={100} suffix="+" />
-                  <div className="text-xs opacity-90">Coffee Cups</div>
+
+                {/* Sub tabs */}
+                <div className="flex items-center gap-1 bg-gray-200/60 dark:bg-black/30 p-1 rounded-xl">
+                  <button
+                    onClick={() => { setActiveTab('skills'); playClick(); }}
+                    className={`px-3 py-1 text-xs font-mono rounded-lg transition-all ${
+                      activeTab === 'skills' 
+                        ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm font-semibold' 
+                        : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-300'
+                    }`}
+                  >
+                    Skills Radar
+                  </button>
+                  <button
+                    onClick={() => { setActiveTab('terminal'); playClick(); }}
+                    className={`px-3 py-1 text-xs font-mono rounded-lg transition-all flex items-center gap-1.5 ${
+                      activeTab === 'terminal' 
+                        ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm font-semibold' 
+                        : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-300'
+                    }`}
+                  >
+                    <Terminal className="w-3.5 h-3.5 text-primary-500" />
+                    <span>Live CLI</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveTab('experience'); playClick(); }}
+                    className={`px-3 py-1 text-xs font-mono rounded-lg transition-all ${
+                      activeTab === 'experience' 
+                        ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm font-semibold' 
+                        : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-300'
+                    }`}
+                  >
+                    Milestones
+                  </button>
                 </div>
               </div>
+
+              {/* Tab 1: Skills Radar */}
+              {activeTab === 'skills' && (
+                <div className="p-6 sm:p-7 space-y-6">
+                  {/* Category Filter Chips */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {categories.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => { setActiveSkillCategory(c); playPop(); }}
+                        className={`text-xs font-mono px-3 py-1 rounded-lg transition-all ${
+                          activeSkillCategory === c
+                            ? 'bg-primary-500 text-white font-semibold shadow-sm'
+                            : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-white/10'
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Skills Grid with Animated Bars */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {filteredSkills.map((skill, index) => {
+                      const Icon = skill.icon;
+                      return (
+                        <div
+                          key={skill.name}
+                          className="p-3.5 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200/80 dark:border-white/5 hover:border-primary-500/30 transition-all"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <Icon className="w-4 h-4 text-primary-500" />
+                              <span className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
+                                {skill.name}
+                              </span>
+                            </div>
+                            <span className="text-xs font-mono text-gray-500 dark:text-gray-400">
+                              {skill.level}%
+                            </span>
+                          </div>
+
+                          {/* Progress Bar */}
+                          <div className="w-full bg-gray-200 dark:bg-white/10 rounded-full h-1.5 overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${skill.level}%` }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.8, delay: index * 0.05 }}
+                              className="h-full bg-gradient-to-r from-primary-500 to-cyan-400 rounded-full"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: Live Interactive CLI Terminal */}
+              {activeTab === 'terminal' && (
+                <div className="p-5 font-mono text-xs sm:text-sm bg-gray-950 text-gray-200 min-h-[360px] flex flex-col justify-between">
+                  <div className="space-y-2 overflow-y-auto max-h-[300px] pr-2">
+                    {terminalHistory.map((line, idx) => (
+                      <div key={idx} className="leading-relaxed">
+                        {line.type === 'user' && (
+                          <span className="text-cyan-400 font-semibold">{line.text}</span>
+                        )}
+                        {line.type === 'system' && (
+                          <span className="text-gray-500">{line.text}</span>
+                        )}
+                        {line.type === 'output' && (
+                          <pre className="text-gray-300 font-mono whitespace-pre-wrap pl-2 border-l-2 border-primary-500/40 my-1">
+                            {line.text}
+                          </pre>
+                        )}
+                        {line.type === 'error' && (
+                          <span className="text-rose-400">{line.text}</span>
+                        )}
+                      </div>
+                    ))}
+                    <div ref={terminalEndRef} />
+                  </div>
+
+                  {/* Terminal Input Bar */}
+                  <div className="pt-3 border-t border-white/10 mt-3">
+                    {/* Quick Command Pills */}
+                    <div className="flex flex-wrap gap-1.5 mb-2.5">
+                      <span className="text-[11px] text-gray-500 self-center">Try:</span>
+                      {['about', 'skills', 'contact', 'sudo hire', 'clear'].map((cmd) => (
+                        <button
+                          key={cmd}
+                          onClick={() => handleCommand(cmd)}
+                          className="px-2 py-0.5 rounded text-[11px] bg-white/10 hover:bg-primary-500/20 text-gray-300 hover:text-primary-300 transition-colors"
+                        >
+                          {cmd}
+                        </button>
+                      ))}
+                    </div>
+
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleCommand();
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      <span className="text-emerald-400 font-bold">$</span>
+                      <input
+                        type="text"
+                        value={terminalInput}
+                        onChange={(e) => setTerminalInput(e.target.value)}
+                        placeholder="type 'help' and press Enter..."
+                        className="w-full bg-transparent text-gray-100 placeholder-gray-600 outline-none font-mono text-xs sm:text-sm"
+                      />
+                      <button
+                        type="submit"
+                        className="p-1 rounded bg-white/10 hover:bg-white/20 text-gray-300 transition-colors"
+                      >
+                        <CornerDownLeft className="w-3.5 h-3.5" />
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 3: Career Milestones */}
+              {activeTab === 'experience' && (
+                <div className="p-6 sm:p-7 space-y-6">
+                  {experiences.map((exp, idx) => (
+                    <div 
+                      key={idx}
+                      className="relative pl-6 pb-6 border-l-2 border-primary-500/30 last:border-0 last:pb-0"
+                    >
+                      <span className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-primary-500 border-4 border-white dark:border-[#0c0f18]" />
+                      <div className="flex items-center justify-between mb-1">
+                        <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
+                          {exp.role}
+                        </h4>
+                        <span className="text-xs font-mono text-primary-600 dark:text-primary-400">
+                          {exp.period}
+                        </span>
+                      </div>
+                      <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
+                        {exp.company}
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {exp.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
             </div>
-          </MotionDiv>
-        </div>
-        {/* Centered Download CV CTA */}
-        <div className="mt-8 text-center">
-          <div className="inline-flex items-center gap-3">
-            <a href="/resume.pdf" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg" target="_blank" rel="noreferrer">
-              Download CV
-            </a>
-            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-3 bg-white/90 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-xl shadow border border-gray-200 dark:border-gray-700">
-              Hire Me
-            </a>
           </div>
+
         </div>
+
       </div>
     </section>
   );

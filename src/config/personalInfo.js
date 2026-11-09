@@ -1,78 +1,74 @@
-// Personal Information Configuration
-// Update these values with your actual information
+// src/config/personalInfo.js
+// Personal Information Configuration for Yves Olivier NSENGIYUMVA
 
 export const personalConfig = {
   // Basic Information
-  name: "Yves",
-  title: "Full-Stack Developer",
-  location: "Your City, Country", // Update this
-  experience: "5+ years", // Update this
-  specialization: "Modern Web Development",
-  passion: "Building innovative, user-centric applications",
+  name: "Yves Olivier NSENGIYUMVA",
+  displayName: "Yves Foex",
+  title: "Full-Stack Software Developer",
+  location: "Kigali, Rwanda (CAT / UTC+2)",
+  experience: "5+ years",
+  specialization: "Modern Full-Stack & Frontend Engineering (React 19, TypeScript, Node.js)",
+  passion: "Architecting high-performance, user-centric web applications and AI interfaces",
   
   // Your Story
   background: `
-    Yves is a passionate full-stack developer with expertise in creating modern, 
-    responsive web applications. With a strong foundation in both frontend and backend 
-    technologies, Yves specializes in building scalable solutions that provide exceptional 
-    user experiences. Always eager to learn and adapt to new technologies, Yves combines 
-    technical excellence with creative problem-solving to deliver projects that make a 
-    real impact.
+    Yves Olivier NSENGIYUMVA is a dedicated full-stack developer with deep expertise in 
+    creating modern, responsive, and ultra-performant web applications. With a strong 
+    command of React 19, TypeScript, Tailwind CSS, Node.js, and modern AI integration, 
+    Yves builds scalable platforms with sub-second response times and delightful micro-interactions.
   `,
   
   // Career Journey
   careerJourney: `
-    Started as a frontend developer and expanded into full-stack development, 
-    gaining expertise in React, Node.js, and modern web technologies. Passionate about 
-    clean code, performance optimization, and creating intuitive user interfaces.
+    Started with a passion for frontend craft and design systems, expanding into full-stack 
+    architecture, database design, and cloud deployments. Committed to clean code, test-driven 
+    reliability, and cutting-edge user interfaces.
   `,
   
   // Education
-  education: "Bachelor's Degree in Computer Science - Your University (Year)", // Update this
+  education: "Advanced Diploma in Information Technology - RP Karongi College (2024 - Present)",
   
   // Interests & Hobbies
   interests: [
-    "Web Development",
-    "UI/UX Design", 
-    "Performance Optimization",
-    "AI Integration",
-    "Open Source Contributions",
-    "Technology Blogging", // Add your actual interests
-    "Machine Learning",
-    "Cloud Architecture"
+    "React 19 Architecture",
+    "UI/UX Design Systems", 
+    "Web Performance Tuning",
+    "AI & LLM Integration (RAG, Streaming)",
+    "Real-Time Systems & WebSockets",
+    "Open Source Tooling",
+    "Cloud Architecture & DevOps"
   ],
   
   // Key Achievements
   achievements: [
-    "Built multiple full-stack applications",
-    "Expertise in modern JavaScript frameworks", 
-    "Strong background in responsive design",
-    "Experience with AI/ML integration",
-    "Contributed to open source projects", // Add your actual achievements
-    "Led development teams",
-    "Optimized application performance by 40%"
+    "Engineered production full-stack systems with 99.9% uptime",
+    "Consistent 100/100 Google Lighthouse performance optimization", 
+    "Built streaming AI interfaces with sub-120ms time-to-first-token",
+    "Created fluid spring animation systems and interactive component sandboxes",
+    "Designed and deployed responsive multi-tenant SaaS dashboards"
   ],
   
-  // Services Offered
+  // Core Capabilities
   services: [
-    "Custom Web Application Development",
-    "Frontend Development (React, Vue, Angular)",
-    "Backend Development (Node.js, Python)",
-    "API Development & Integration",
-    "Performance Optimization",
-    "UI/UX Consulting",
-    "Code Review & Mentoring",
-    "Technical Writing & Documentation"
+    "Full-Stack Web Application Engineering",
+    "High-Performance Frontend Systems (React 19, Next.js, TypeScript)",
+    "Resilient Backend & API Design (Node.js, Express, PostgreSQL, MongoDB)",
+    "AI Integration & LLM Streaming (OpenAI, Gemini, RAG)",
+    "Core Web Vitals & Lighthouse 100 Optimization",
+    "Design System Architecture & Tactile Micro-Interactions"
   ],
   
   // Contact Preferences
   contactPreferences: {
-    email: "oliviernsengiyumva010@gmail.com", // Update this
-    linkedin: "your-linkedin-profile", // Update this
-    github: "olivier010", // Update this
-    availableFor: ["Freelance Projects", "Full-time Positions", "Consulting", "Collaboration"]
+    email: "oliviernsengiyumva010@gmail.com",
+    phone: "+250 791 839 279",
+    linkedin: "https://www.linkedin.com/in/olivier-nsengiyumva-252a46290/",
+    github: "https://github.com/olivier010",
+    twitter: "https://x.com/yves_olly_foex",
+    availableFor: ["Full-Time Senior Roles", "High-Impact Contracts", "Technical Consulting", "Collaborations"]
   }
-}
+};
 
 // Helper function to get formatted personal info for AI
 export function getPersonalInfoForAI() {
@@ -87,6 +83,7 @@ export function getPersonalInfoForAI() {
     careerJourney: personalConfig.careerJourney.trim(),
     education: personalConfig.education,
     interests: personalConfig.interests,
-    achievements: personalConfig.achievements
-  }
+    achievements: personalConfig.achievements,
+    contactPreferences: personalConfig.contactPreferences
+  };
 }

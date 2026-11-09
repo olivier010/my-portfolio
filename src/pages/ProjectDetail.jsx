@@ -5,6 +5,7 @@ import { ArrowLeft, Github, ExternalLink } from 'lucide-react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { getProjectBySlug } from '../utils/projectService'
 import { setPageSEO } from '../utils/seo'
+import { TechIconBadge } from '../components/HomeProjects'
 
 const ProjectDetail = () => {
   const { slug } = useParams()
@@ -73,10 +74,10 @@ const ProjectDetail = () => {
         </Link>
 
         <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-          {project.fields.featuredImage && (
+          {project.fields.featuredImage?.fields?.file?.url && (
             <div className="h-96 overflow-hidden">
               <img
-                src={project.fields.featuredImage.fields.file.url + '?w=1200'}
+                src={(project.fields.featuredImage.fields.file.url.startsWith('//') ? 'https:' : '') + project.fields.featuredImage.fields.file.url + '?w=1200'}
                 alt={project.fields.title}
                 className="w-full h-full object-cover"
               />
@@ -131,12 +132,7 @@ const ProjectDetail = () => {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Technologies Used</h2>
                 <div className="flex flex-wrap gap-2">
                   {project.fields.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 text-sm rounded-full"
-                    >
-                      {tech}
-                    </span>
+                    <TechIconBadge key={i} name={tech} />
                   ))}
                 </div>
               </div>
