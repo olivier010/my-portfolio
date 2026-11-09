@@ -6,12 +6,12 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import ServicesSection from './components/ServicesSection';
 import ScrollReveal from './components/ScrollReveal';
 import { setPageSEO } from './utils/seo';
 
 // Lazy load below-the-fold components and secondary pages for peak mobile performance
 const AboutMe = React.lazy(() => import('./components/AboutMe'));
-const ServicesSection = React.lazy(() => import('./components/ServicesSection'));
 const HomeProjects = React.lazy(() => import('./components/HomeProjects'));
 const BlogSection = React.lazy(() => import('./components/BlogSection'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
@@ -90,11 +90,11 @@ function AppContent() {
                 {/* Hero is above-the-fold: renders instantly without delay or spinner */}
                 <Home />
 
+                {/* Capabilities immediately follows hero */}
+                <ServicesSection />
+
                 {/* Below-the-fold content loads progressively */}
                 <Suspense fallback={<SectionSkeleton />}>
-                  <ScrollReveal delay={0.05}>
-                    <ServicesSection />
-                  </ScrollReveal>
                   <ScrollReveal delay={0.05}>
                     <AboutMe />
                   </ScrollReveal>

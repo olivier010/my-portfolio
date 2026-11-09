@@ -37,7 +37,7 @@ const Navbar = () => {
       }
 
       // Exact DOM order of sections to avoid skipping
-      const sections = ['home', 'services', 'about', 'projects', 'blog', 'contact'];
+      const sections = ['home', 'capabilities', 'about', 'projects', 'blog', 'contact'];
       const scrollPosition = window.scrollY + 160;
 
       // Scan from bottom to top to find the current active section
@@ -99,7 +99,7 @@ const Navbar = () => {
   // 1. Home -> 2. Capabilities (Services) -> 3. About -> 4. Projects -> 5. Blog -> 6. Contact
   const navItems = [
     { name: 'Home', to: '#home' },
-    { name: 'Capabilities', to: '#services' },
+    { name: 'Capabilities', to: '#capabilities' },
     { name: 'About', to: '#about' },
     { name: 'Projects', to: '#projects' },
     { name: 'Blog', to: '#blog' },

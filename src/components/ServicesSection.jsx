@@ -82,9 +82,11 @@ const ServicesSection = () => {
 
   return (
     <section 
-      id="services" 
-      className="py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
+      id="capabilities" 
+      className="py-20 md:py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
     >
+      {/* Anchor for legacy or alternate #services links */}
+      <span id="services" className="absolute -top-24" />
       {/* Background Subtle Grid Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
 
@@ -108,10 +110,10 @@ const ServicesSection = () => {
             return (
               <motion.article
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
+                viewport={{ once: true, amount: 'some' }}
+                transition={{ duration: 0.45, delay: index * 0.05 }}
                 onMouseEnter={() => { setActiveCard(item.id); playPop(); }}
                 onMouseLeave={() => setActiveCard(null)}
                 className="group relative flex flex-col justify-between p-7 rounded-2xl bg-gray-50/70 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 hover:border-primary-500/40 dark:hover:border-primary-500/40 shadow-sm hover:shadow-xl hover:shadow-primary-500/5 transition-all duration-300 backdrop-blur-xl overflow-hidden"
