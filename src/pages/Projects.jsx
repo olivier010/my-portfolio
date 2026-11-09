@@ -5,6 +5,7 @@ import { Github, ExternalLink, Calendar, Tag } from 'lucide-react'
 import { getProjects } from '../utils/projectService'
 import { format } from 'date-fns'
 import { setPageSEO } from '../utils/seo'
+import { TechIconBadge } from '../components/HomeProjects'
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([])
@@ -47,8 +48,8 @@ const ProjectsPage = () => {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">All Projects</h1>
             <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {[...Array(8)].map((_, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
               <div key={i} className="animate-pulse">
                 <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded-lg mb-3"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
@@ -82,7 +83,7 @@ const ProjectsPage = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <div
               key={project.sys.id}
@@ -136,18 +137,19 @@ const ProjectsPage = () => {
                           <span>{formatProjectDate(project.fields.projectDate)}</span>
                         </span>
                       )}
-                      
-                      {project.fields.technologies?.length > 0 && (
-                        <span className="flex items-center">
-                          <Tag className="mr-1 w-3 h-3" />
-                          <span>{project.fields.technologies.length} techs</span>
-                        </span>
-                      )}
                     </div>
                     
-                    <p className="mt-2 text-xs text-gray-600 dark:text-gray-300 line-clamp-2 h-8">
+                    <p className="mt-2 text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
                       {project.fields.description}
                     </p>
+
+                    {project.fields.technologies?.length > 0 && (
+                      <div className="mt-2.5 flex flex-wrap gap-1">
+                        {project.fields.technologies.slice(0, 3).map((tech, i) => (
+                          <TechIconBadge key={i} name={tech} />
+                        ))}
+                      </div>
+                    )}
                     
                     <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
                       <div className="flex space-x-2">

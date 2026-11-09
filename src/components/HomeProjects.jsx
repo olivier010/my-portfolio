@@ -1,246 +1,326 @@
 // src/components/HomeProjects.jsx
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Github, ExternalLink, Calendar, Tag } from 'lucide-react'
-import SectionHeading from './SectionHeading'
-import { getProjects } from '../utils/projectService'
-import { format } from 'date-fns'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  Github, ExternalLink, ArrowRight, Code2 
+} from 'lucide-react';
+import { 
+  SiReact, SiTypescript, SiJavascript, SiNodedotjs, 
+  SiNextdotjs, SiTailwindcss, SiPostgresql, SiMongodb, 
+  SiOpenai, SiStripe, SiDocker, SiSocketdotio, SiVite, 
+  SiFramer, SiCss3, SiVercel 
+} from 'react-icons/si';
+import SectionHeading from './SectionHeading';
+import { getProjects } from '../utils/projectService';
+import { playClick } from '../utils/sound';
+
+// Helper to render branded colored tech icons
+export const TechIconBadge = ({ name }) => {
+  const lower = (name || '').toLowerCase().trim();
+
+  let Icon = Code2;
+  let color = '#0ea5e9';
+
+  if (lower.includes('react hooks')) {
+    Icon = SiReact;
+    color = '#61DAFB';
+  } else if (lower.includes('react')) {
+    Icon = SiReact;
+    color = '#61DAFB';
+  } else if (lower.includes('typescript') || lower === 'ts') {
+    Icon = SiTypescript;
+    color = '#3178C6';
+  } else if (lower.includes('javascript') || lower === 'js') {
+    Icon = SiJavascript;
+    color = '#F7DF1E';
+  } else if (lower.includes('css')) {
+    Icon = SiCss3;
+    color = '#1572B6';
+  } else if (lower.includes('node')) {
+    Icon = SiNodedotjs;
+    color = '#5FA04E';
+  } else if (lower.includes('next')) {
+    Icon = SiNextdotjs;
+    color = 'currentColor';
+  } else if (lower.includes('tailwind')) {
+    Icon = SiTailwindcss;
+    color = '#06B6D4';
+  } else if (lower.includes('vercel')) {
+    Icon = SiVercel;
+    color = 'currentColor';
+  } else if (lower.includes('postgres') || lower.includes('sql')) {
+    Icon = SiPostgresql;
+    color = '#4169E1';
+  } else if (lower.includes('mongo')) {
+    Icon = SiMongodb;
+    color = '#47A248';
+  } else if (lower.includes('openai') || lower.includes('ai')) {
+    Icon = SiOpenai;
+    color = '#10A37F';
+  } else if (lower.includes('stripe')) {
+    Icon = SiStripe;
+    color = '#635BFF';
+  } else if (lower.includes('docker')) {
+    Icon = SiDocker;
+    color = '#2496ED';
+  } else if (lower.includes('socket')) {
+    Icon = SiSocketdotio;
+    color = 'currentColor';
+  } else if (lower.includes('vite')) {
+    Icon = SiVite;
+    color = '#646CFF';
+  } else if (lower.includes('framer')) {
+    Icon = SiFramer;
+    color = '#0055FF';
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-mono bg-gray-100 dark:bg-white/[0.05] border border-gray-200/80 dark:border-white/10 text-gray-700 dark:text-gray-300">
+      <Icon className="w-3.5 h-3.5 shrink-0" style={{ color }} />
+      <span>{name}</span>
+    </span>
+  );
+};
 
 const HomeProjects = () => {
-  const [projects, setProjects] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        console.log('Fetching projects...')
-        const projects = await getProjects({
-          limit: 6,
-          include: 2  // Include linked assets and entries
-        })
+        setLoading(true);
+        const fetched = await getProjects({ limit: 6 });
         
-        console.log('Projects from Contentful:', projects)
-        
-        if (projects && projects.length > 0) {
-          console.log('Raw projects data:', projects)
-          
-          const formattedProjects = projects.map(project => {
-            let imageUrl = null
-            const imageField = project.fields.featuredImage
-            
-            if (imageField) {
-              if (imageField.fields?.file?.url) {
-                imageUrl = imageField.fields.file.url.startsWith('//') 
-                  ? `https:${imageField.fields.file.url}`
-                  : imageField.fields.file.url
+        if (fetched && fetched.length > 0) {
+          const formatted = fetched.map(p => {
+            const imgField = p.fields?.featuredImage;
+            let imgUrl = null;
+            if (imgField?.fields?.file?.url) {
+              imgUrl = imgField.fields.file.url.startsWith('//')
+                ? `https:${imgField.fields.file.url}`
+                : imgField.fields.file.url;
+            }
+
+            // Derive technologies if not explicitly present in Contentful entry
+            let technologies = p.fields?.technologies;
+            if (!technologies || !Array.isArray(technologies) || technologies.length === 0) {
+              const titleLower = (p.fields?.title || '').toLowerCase();
+              if (titleLower.includes('tenzies')) {
+                technologies = ['React.js', 'JavaScript', 'CSS', 'React Hooks'];
+              } else if (titleLower.includes('screener') || titleLower.includes('umurava')) {
+                technologies = ['React.js', 'TypeScript', 'OpenAI API', 'Tailwind CSS'];
+              } else if (titleLower.includes('renting') || titleLower.includes('properties')) {
+                technologies = ['React.js', 'Node.js', 'Tailwind CSS', 'Vercel'];
+              } else {
+                technologies = ['React.js', 'JavaScript', 'CSS'];
               }
             }
-            
+
             return {
-              ...project,
-              fields: {
-                ...project.fields,
-                featuredImage: imageUrl ? { 
-                  fields: { 
-                    file: { url: imageUrl } 
-                  } 
-                } : null
-              }
-            }
-          })
-          
-          setProjects(formattedProjects)
+              id: p.sys.id,
+              slug: p.fields.slug || p.sys.id,
+              title: p.fields.title,
+              description: p.fields.description || p.fields.excerpt || 'Explore project details and live demo.',
+              featuredImage: imgUrl,
+              tags: technologies,
+              gitHubUrl: p.fields.gitHubUrl || '',
+              liveDemoUrl: p.fields.liveDemoUrl || '',
+            };
+          });
+
+          setProjects(formatted);
         } else {
-          console.warn('No projects found in Contentful')
-          setError('No projects found. Please add some projects in Contentful.')
+          setProjects([]);
         }
       } catch (err) {
-        console.error('Error fetching projects:', err)
-        setError('Failed to load projects. Please check your console for more details.')
+        console.error('Error fetching projects from Contentful:', err);
+        setError('Failed to load projects from Contentful.');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjects()
-  }, [])
+    fetchProjects();
+  }, []);
 
-  if (loading) {
-    return (
-      <section id="projects" className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">My Projects</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="h-36 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
-                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
+  return (
+    <section 
+      id="projects" 
+      className="py-24 bg-gray-50/60 dark:bg-[#090b13] text-gray-900 dark:text-white transition-colors duration-300 relative"
+    >
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+        
+        {/* Section Heading */}
+        <div className="mb-14 text-center">
+          <SectionHeading
+            eyebrow="Portfolio Projects"
+            title={<>Featured <span className="text-primary-500">Work</span></>}
+            subtitle="Selected web applications and digital solutions fetched live from Contentful."
+          />
+        </div>
+
+        {/* Loading State Skeleton (3 Cards) */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div 
+                key={i} 
+                className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#0d101d] overflow-hidden animate-pulse p-4"
+              >
+                <div className="h-44 bg-gray-200 dark:bg-white/5 rounded-lg mb-4" />
+                <div className="h-5 bg-gray-200 dark:bg-white/10 rounded w-3/4 mb-2" />
+                <div className="h-3 bg-gray-100 dark:bg-white/5 rounded w-full mb-2" />
+                <div className="h-3 bg-gray-100 dark:bg-white/5 rounded w-2/3 mb-4" />
+                <div className="flex gap-2">
+                  <div className="h-6 w-16 bg-gray-200 dark:bg-white/5 rounded" />
+                  <div className="h-6 w-16 bg-gray-200 dark:bg-white/5 rounded" />
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-    )
-  }
+        )}
 
-  if (error) {
-    return (
-      <section id="projects" className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-red-500">{error}</p>
-        </div>
-      </section>
-    )
-  }
+        {/* Error State */}
+        {!loading && error && (
+          <div className="text-center py-12">
+            <p className="text-rose-500 text-sm">{error}</p>
+          </div>
+        )}
 
-  // Format date if available
-  const formatProjectDate = (dateString) => {
-    if (!dateString) return null
-    try {
-      return format(new Date(dateString), 'MMM yyyy')
-    } catch (e) {
-      return null
-    }
-  }
+        {/* Empty State */}
+        {!loading && !error && projects.length === 0 && (
+          <div className="text-center py-12 text-gray-500 text-sm">
+            No projects found in Contentful.
+          </div>
+        )}
 
-  return (
-    <section id="projects" className="py-16 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
-        <div>
-          <SectionHeading title="My Projects" subtitle="A collection of my recent work and projects" id="projects" />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {projects && projects.length > 0 ? (
-            projects.map((project, index) => (
-              <motion.div
-                key={project.sys.id}
-                initial={{ opacity: 0, y: 10 }}
+        {/* 3 Columns Grid of Contentful Projects (Little / Compact Cards) */}
+        {!loading && !error && projects.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+              <motion.article
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="group"
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="group relative rounded-xl bg-white dark:bg-[#0d101d] border border-gray-200 dark:border-white/10 overflow-hidden shadow-xs hover:shadow-xl hover:border-primary-500/50 dark:hover:border-primary-500/40 transition-all duration-300 flex flex-col justify-between"
               >
+                {/* Compact Thumbnail Image */}
                 <Link
-                  to={`/projects/${project.fields.slug}`}
-                  className="block h-full"
-                  aria-label={`View details of project ${project.fields.title}`}
+                  to={`/projects/${project.slug}`}
+                  onClick={() => playClick()}
+                  className="relative h-40 sm:h-44 w-full overflow-hidden block bg-gray-100 dark:bg-white/5"
                 >
-                  <div className="h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-violet-400/30 transition-all duration-300 flex flex-col">
-                    {project.fields.featuredImage?.fields?.file?.url ? (
-                      <div className="h-36 overflow-hidden">
-                        <img
-                          src={`${project.fields.featuredImage.fields.file.url}?w=400&h=200&fit=fill`}
-                          alt={project.fields.title || 'Project'}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.target.style.display = 'none'
-                            e.target.parentElement.innerHTML = (
-                              '<div class="h-full w-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">' +
-                              '<span class="text-xs text-gray-400">No image</span>' +
-                              '</div>'
-                            )
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="h-36 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                        <span className="text-xs text-gray-400">No image</span>
-                      </div>
-                    )}
-                    
-                    <div className="p-3 flex-1 flex flex-col">
-                      <div className="flex justify-between items-start">
-                        <h3 className="font-medium text-sm text-gray-900 dark:text-white line-clamp-1 pr-2">
-                          {project.fields.title}
-                        </h3>
-                        {project.fields.featured && (
-                          <span className="text-[10px] px-1.5 py-0.5 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200 rounded">
-                            Featured
-                          </span>
-                        )}
-                      </div>
-                      
-                      <div className="mt-1 flex items-center text-xs text-gray-500 dark:text-gray-400 space-x-2">
-                        {project.fields.projectDate && (
-                          <span className="flex items-center">
-                            <Calendar className="mr-1 w-3 h-3" />
-                            <span>{formatProjectDate(project.fields.projectDate)}</span>
-                          </span>
-                        )}
-                        
-                        {project.fields.technologies?.length > 0 && (
-                          <span className="flex items-center">
-                            <Tag className="mr-1 w-3 h-3" />
-                            <span>{project.fields.technologies.length} techs</span>
-                          </span>
-                        )}
-                      </div>
-                      
-                      <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-300 line-clamp-2 h-8">
-                        {project.fields.description}
-                      </p>
-                      
-                      <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                        <div className="flex space-x-2">
-                          {project.fields.gitHubUrl && (
-                            <a
-                              href={project.fields.gitHubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs"
-                              onClick={(e) => e.stopPropagation()}
-                              title="GitHub"
-                            >
-                              <Github className="w-3.5 h-3.5" />
-                            </a>
-                          )}
-                          
-                          {project.fields.liveDemoUrl && (
-                            <a
-                              href={project.fields.liveDemoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs"
-                              onClick={(e) => e.stopPropagation()}
-                              title="Live Demo"
-                            >
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          )}
-                        </div>
-                        
-                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
-                          View
-                        </span>
-                      </div>
+                  {project.featuredImage ? (
+                    <img
+                      src={project.featuredImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs font-mono text-gray-400">
+                      No Preview Available
+                    </div>
+                  )}
+                  
+                  {/* Subtle dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d101d]/80 via-transparent to-transparent opacity-60" />
+                </Link>
+
+                {/* Compact Card Content Body (Few Words) */}
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Title linked to project */}
+                    <Link
+                      to={`/projects/${project.slug}`}
+                      onClick={() => playClick()}
+                      className="block"
+                    >
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors line-clamp-1">
+                        {project.title}
+                      </h3>
+                    </Link>
+
+                    {/* Few words description */}
+                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed mb-4">
+                      {project.description}
+                    </p>
+
+                    {/* Tech stack with branded colored icons */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.tags.map((tag) => (
+                        <TechIconBadge key={tag} name={tag} />
+                      ))}
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            ))
-          ) : (
-            <div className="col-span-4 text-center py-8">
-              <p className="text-sm text-gray-500 dark:text-gray-400">No projects found. Please add some projects in Contentful.</p>
-            </div>
-          )}
-        </div>
-        
-        <div className="text-center mt-10">
+
+                  {/* Bottom Action Bar: Read More & Quick Links */}
+                  <div className="pt-3 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
+                    {/* Read More button that opens the project */}
+                    <Link
+                      to={`/projects/${project.slug}`}
+                      onClick={() => playClick()}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-500 transition-colors group-hover:translate-x-0.5"
+                    >
+                      <span>Read more</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+
+                    <div className="flex items-center gap-1.5">
+                      {project.gitHubUrl && (
+                        <a
+                          href={project.gitHubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => playClick()}
+                          className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                          title="GitHub Repository"
+                        >
+                          <Github className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+
+                      {project.liveDemoUrl && (
+                        <a
+                          href={project.liveDemoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => playClick()}
+                          className="p-1.5 rounded-lg text-primary-600 dark:text-primary-400 hover:bg-primary-500/10 transition-colors"
+                          title="Live Demo"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
+
+        {/* View All Projects Button */}
+        <div className="mt-12 text-center">
           <Link
             to="/projects"
-            className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+            onClick={() => playClick()}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary-500/50 hover:text-primary-500 shadow-xs transition-all"
           >
-            View all projects <span className="ml-1">→</span>
+            <span>View All Projects</span>
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HomeProjects
+export default HomeProjects;
