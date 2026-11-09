@@ -48,30 +48,39 @@ const TOTAL_CHARS = FULL_CODE_TEXT.length;
 const CodeTypingIDE = () => {
   const [charIndex, setCharIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  // Wait until initial page load settles before starting typing animation
+  useEffect(() => {
+    const readyTimer = setTimeout(() => setIsReady(true), 350);
+    return () => clearTimeout(readyTimer);
+  }, []);
 
   useEffect(() => {
+    if (!isReady) return;
     let timer;
 
     if (charIndex < TOTAL_CHARS) {
-      // Natural variable typing speed
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const step = isMobile ? 2 : 1;
       const nextChar = FULL_CODE_TEXT[charIndex];
-      let delay = 22;
-      if (nextChar === '\n') delay = 50;
-      else if (nextChar === ' ') delay = 15;
-      else if (nextChar === ',' || nextChar === ';') delay = 45;
+      let delay = isMobile ? 35 : 22;
+      if (nextChar === '\n') delay = isMobile ? 60 : 50;
+      else if (nextChar === ' ') delay = isMobile ? 20 : 15;
+      else if (nextChar === ',' || nextChar === ';') delay = isMobile ? 50 : 45;
 
       timer = setTimeout(() => {
-        setCharIndex((prev) => prev + 1);
+        setCharIndex((prev) => Math.min(TOTAL_CHARS, prev + step));
       }, delay);
     } else {
       // Pause at full code before restarting
       timer = setTimeout(() => {
         setCharIndex(0);
-      }, 6500);
+      }, 7000);
     }
 
     return () => clearTimeout(timer);
-  }, [charIndex]);
+  }, [charIndex, isReady]);
 
   // Render tokens up to current charIndex
   const renderedContent = useMemo(() => {
