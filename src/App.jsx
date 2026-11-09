@@ -4,16 +4,14 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import AIChatbot from './components/AIChatbot';
-import ScrollControls from './components/ScrollControls';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import ServicesSection from './components/ServicesSection';
 import ScrollReveal from './components/ScrollReveal';
 import { setPageSEO } from './utils/seo';
 
-// Lazy load components for better performance
-const Navbar = React.lazy(() => import('./components/Navbar'));
-const Home = React.lazy(() => import('./components/Home'));
+// Lazy load below-the-fold components and secondary pages for peak mobile performance
 const AboutMe = React.lazy(() => import('./components/AboutMe'));
-const ServicesSection = React.lazy(() => import('./components/ServicesSection'));
 const HomeProjects = React.lazy(() => import('./components/HomeProjects'));
 const BlogSection = React.lazy(() => import('./components/BlogSection'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
@@ -23,10 +21,21 @@ const ProjectDetail = React.lazy(() => import('./pages/ProjectDetail'));
 const ProjectsPage = React.lazy(() => import('./pages/Projects'));
 const Footer = React.lazy(() => import('./components/footer'));
 
-// Loading component
+// Lazy load non-critical floating accessories
+const AIChatbot = React.lazy(() => import('./components/AIChatbot'));
+const ScrollControls = React.lazy(() => import('./components/ScrollControls'));
+
+// Lightweight non-blocking fallback for below-the-fold sections
+const SectionSkeleton = () => (
+  <div className="w-full py-12 flex items-center justify-center">
+    <div className="h-8 w-8 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
+  </div>
+);
+
+// Full page loader only for standalone subpage routes
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#07090f]">
+    <div className="h-10 w-10 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
   </div>
 );
 
@@ -55,34 +64,37 @@ const ScrollToTop = () => {
 // Animation variants for page transitions
 const pageVariants = {
   initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.5 } },
-  exit: { opacity: 0, transition: { duration: 0.3 } }
+  animate: { opacity: 1, transition: { duration: 0.4 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 function AppContent() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300">
       <ScrollToTop />
-      <Suspense fallback={<LoadingFallback />}>
-        <Navbar />
-        
-        <AnimatePresence mode="wait">
-          <motion.main
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={pageVariants}
-            className="min-h-[calc(100vh-4rem)]"
-          >
-            <Routes>
-              <Route path="/" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <ScrollReveal>
-                    <Home />
-                  </ScrollReveal>
-                  <ScrollReveal delay={0.05}>
-                    <ServicesSection />
-                  </ScrollReveal>
+      
+      {/* Navbar is critical above-the-fold */}
+      <Navbar />
+      
+      <AnimatePresence mode="wait">
+        <motion.main
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={pageVariants}
+          className="min-h-[calc(100vh-4rem)]"
+        >
+          <Routes>
+            <Route path="/" element={
+              <>
+                {/* Hero is above-the-fold: renders instantly without delay or spinner */}
+                <Home />
+
+                {/* Capabilities immediately follows hero */}
+                <ServicesSection />
+
+                {/* Below-the-fold content loads progressively */}
+                <Suspense fallback={<SectionSkeleton />}>
                   <ScrollReveal delay={0.05}>
                     <AboutMe />
                   </ScrollReveal>
@@ -95,36 +107,43 @@ function AppContent() {
                   <ScrollReveal delay={0.05}>
                     <ContactSection />
                   </ScrollReveal>
+                  <Footer />
                 </Suspense>
-              } />
-              <Route path="/blog" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <Blog />
-                </Suspense>
-              } />
-              <Route path="/blog/:slug" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <BlogPost />
-                </Suspense>
-              } />
-              <Route path="/projects/:slug" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <ProjectDetail />
-                </Suspense>
-              } />
-              <Route path="/projects" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <ProjectsPage />
-                </Suspense>
-              } />
-            </Routes>
-          </motion.main>
-        </AnimatePresence>
-        
-        <Footer />
+              </>
+            } />
+            <Route path="/blog" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <Blog />
+                <Footer />
+              </Suspense>
+            } />
+            <Route path="/blog/:slug" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <BlogPost />
+                <Footer />
+              </Suspense>
+            } />
+            <Route path="/projects/:slug" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ProjectDetail />
+                <Footer />
+              </Suspense>
+            } />
+            <Route path="/projects" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ProjectsPage />
+                <Footer />
+              </Suspense>
+            } />
+          </Routes>
+        </motion.main>
+      </AnimatePresence>
+
+      {/* Non-critical floating tools loaded asynchronously */}
+      <Suspense fallback={null}>
+        <ScrollControls />
+        <AIChatbot />
       </Suspense>
-      <ScrollControls />
-      <AIChatbot />
     </div>
   );
 }
@@ -132,13 +151,11 @@ function AppContent() {
 function App() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<LoadingFallback />}>
-        <Router>
-          <ThemeProvider>
-            <AppContent />
-          </ThemeProvider>
-        </Router>
-      </Suspense>
+      <Router>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
+      </Router>
     </ErrorBoundary>
   );
 }
