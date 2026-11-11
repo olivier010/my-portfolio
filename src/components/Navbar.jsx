@@ -40,13 +40,16 @@ const Navbar = () => {
       const sections = ['home', 'capabilities', 'about', 'projects', 'blog', 'contact'];
       const scrollPosition = window.scrollY + 160;
 
-      // Scan from bottom to top to find the current active section
+      // Scan from bottom to top using true viewport-relative document Y
       for (let i = sections.length - 1; i >= 0; i--) {
         const sectionId = sections[i];
         const element = document.getElementById(sectionId);
-        if (element && scrollPosition >= element.offsetTop) {
-          setActiveSection(sectionId);
-          break;
+        if (element) {
+          const elementTop = element.getBoundingClientRect().top + window.scrollY;
+          if (scrollPosition >= elementTop) {
+            setActiveSection(sectionId);
+            break;
+          }
         }
       }
     };
@@ -56,33 +59,44 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleHashScroll = (hash) => {
+  const scrollToSectionElement = (sectionId, attempt = 0) => {
+    if (sectionId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = window.innerWidth < 768 ? 68 : 76;
+      const elementTop = element.getBoundingClientRect().top + window.scrollY;
+      const targetPosition = Math.max(0, elementTop - headerOffset);
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    } else if (attempt < 15) {
+      // Retry briefly if lazy-loaded section is still hydrating
+      setTimeout(() => scrollToSectionElement(sectionId, attempt + 1), 100);
+    }
+  };
+
+  const handleHashScroll = (hash, fromMobileDrawer = false) => {
     const sectionId = hash.replace('#', '');
     setActiveSection(sectionId);
     setMenuOpen(false);
     playClick();
 
+    // Wait briefly for the mobile drawer collapse animation before scrolling so mobile browsers don't abort smooth scroll
+    const delay = fromMobileDrawer ? 210 : 0;
+
     if (location.pathname !== '/') {
       navigate('/', { replace: true });
-      setTimeout(() => {
-        if (sectionId === 'home') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-      }, 300);
+      setTimeout(() => scrollToSectionElement(sectionId), Math.max(300, delay));
+    } else if (delay > 0) {
+      setTimeout(() => scrollToSectionElement(sectionId), delay);
     } else {
-      if (sectionId === 'home') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
+      scrollToSectionElement(sectionId);
     }
   };
 
@@ -139,8 +153,8 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (Ordered sequentially) */}
-          <nav className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200/60 dark:border-white/10 backdrop-blur-md">
+          {/* Desktop Navigation Links (Ordered sequentially with gradient underline active state) */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2 px-3 py-1.5 rounded-full bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200/60 dark:border-white/10 backdrop-blur-md">
             {navItems.map((item) => {
               const sectionId = item.to.replace('#', '');
               const isActive = activeSection === sectionId;
@@ -151,22 +165,22 @@ const Navbar = () => {
                   href={item.to}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleHashScroll(item.to);
+                    handleHashScroll(item.to, false);
                   }}
-                  className={`relative px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 ${
+                  className={`relative px-3 py-1.5 text-xs font-semibold transition-colors duration-200 ${
                     isActive
-                      ? 'text-white'
+                      ? 'text-blue-600 dark:text-white font-bold'
                       : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
+                  <span className="relative z-10">{item.name}</span>
                   {isActive && (
                     <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 bg-primary-600 dark:bg-primary-500 rounded-full shadow-sm"
-                      transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+                      layoutId="nav-underline"
+                      className="absolute left-2.5 right-2.5 bottom-0 h-[3px] rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-[0_1px_8px_rgba(79,70,229,0.45)]"
+                      transition={{ type: 'spring', damping: 28, stiffness: 380 }}
                     />
                   )}
-                  <span className="relative z-10">{item.name}</span>
                 </a>
               );
             })}
@@ -244,30 +258,30 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.18 }}
             className="md:hidden bg-white/95 dark:bg-[#07090f]/95 backdrop-blur-2xl border-b border-gray-200 dark:border-white/10 overflow-hidden"
           >
-            <div className="px-4 py-4 space-y-2">
+            <div className="px-4 py-4 space-y-1.5">
               {navItems.map((item) => {
                 const sectionId = item.to.replace('#', '');
                 const isActive = activeSection === sectionId;
 
                 return (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.to}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleHashScroll(item.to);
-                    }}
-                    className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                    type="button"
+                    onClick={() => handleHashScroll(item.to, true)}
+                    className={`w-full flex flex-col items-start px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors text-left ${
                       isActive
-                        ? 'bg-primary-500 text-white'
+                        ? 'text-blue-600 dark:text-white font-bold bg-gray-100/70 dark:bg-white/[0.04]'
                         : 'text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5'
                     }`}
                   >
-                    {item.name}
-                  </a>
+                    <span>{item.name}</span>
+                    {isActive && (
+                      <span className="mt-1 h-[3px] w-12 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-[0_1px_6px_rgba(79,70,229,0.45)]" />
+                    )}
+                  </button>
                 );
               })}
               

@@ -93,20 +93,28 @@ function AppContent() {
                 {/* Capabilities immediately follows hero */}
                 <ServicesSection />
 
-                {/* Below-the-fold content loads progressively */}
+                {/* Below-the-fold content loads progressively with independent boundaries */}
                 <Suspense fallback={<SectionSkeleton />}>
                   <ScrollReveal delay={0.05}>
                     <AboutMe />
                   </ScrollReveal>
+                </Suspense>
+                <Suspense fallback={<SectionSkeleton />}>
                   <ScrollReveal delay={0.05}>
                     <HomeProjects />
                   </ScrollReveal>
+                </Suspense>
+                <Suspense fallback={<SectionSkeleton />}>
                   <ScrollReveal delay={0.05}>
                     <BlogSection />
                   </ScrollReveal>
+                </Suspense>
+                <Suspense fallback={<SectionSkeleton />}>
                   <ScrollReveal delay={0.05}>
                     <ContactSection />
                   </ScrollReveal>
+                </Suspense>
+                <Suspense fallback={null}>
                   <Footer />
                 </Suspense>
               </>
