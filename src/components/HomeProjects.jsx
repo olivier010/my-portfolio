@@ -149,18 +149,16 @@ const HomeProjects = () => {
   return (
     <section 
       id="projects" 
-      className="py-24 bg-gray-50/60 dark:bg-[#090b13] text-gray-900 dark:text-white transition-colors duration-300 relative"
+      className="py-12 md:py-16 bg-gray-50/60 dark:bg-[#090b13] text-gray-900 dark:text-white transition-colors duration-300 relative"
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Section Heading */}
-        <div className="mb-14 text-center">
-          <SectionHeading
-            eyebrow="Portfolio Projects"
-            title={<>Featured <span className="text-primary-500">Work</span></>}
-            subtitle="Selected web applications and digital solutions fetched live from Contentful."
-          />
-        </div>
+        <SectionHeading
+          eyebrow="Portfolio Projects"
+          title={<>Featured <span className="text-primary-500">Work</span></>}
+          subtitle="Selected web applications and digital solutions fetched live from Contentful."
+        />
 
         {/* Loading State Skeleton (3 Cards) */}
         {loading && (

@@ -83,7 +83,7 @@ const ServicesSection = () => {
   return (
     <section 
       id="capabilities" 
-      className="py-20 md:py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
+      className="py-12 md:py-16 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
     >
       {/* Anchor for legacy or alternate #services links */}
       <span id="services" className="absolute -top-24" />
@@ -93,13 +93,11 @@ const ServicesSection = () => {
       <div className="container relative mx-auto px-4 sm:px-6 max-w-7xl z-10">
         
         {/* Section Header */}
-        <div className="mb-16">
-          <SectionHeading
-            eyebrow="Engineering Capabilities"
-            title={<>Architected for <span className="text-primary-500">Speed</span> &amp; Precision</>}
-            subtitle="Modern software engineering is more than just code. It is the synthesis of performant architectures, clean design systems, and measurable business impact."
-          />
-        </div>
+        <SectionHeading
+          eyebrow="Engineering Capabilities"
+          title={<>Architected for <span className="text-primary-500">Speed</span> &amp; Precision</>}
+          subtitle="Modern software engineering is more than just code. It is the synthesis of performant architectures, clean design systems, and measurable business impact."
+        />
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
