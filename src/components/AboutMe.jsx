@@ -131,18 +131,16 @@ const AboutMe = () => {
   return (
     <section 
       id="about" 
-      className="py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
+      className="py-12 md:py-16 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
         
         {/* Section Heading */}
-        <div className="mb-16">
-          <SectionHeading
-            eyebrow="Developer Journey"
-            title={<>Engineering with <span className="text-primary-500">Purpose</span> &amp; Precision</>}
-            subtitle="The bridge between clean code architecture, intuitive product design, and continuous technical evolution."
-          />
-        </div>
+        <SectionHeading
+          eyebrow="Developer Journey"
+          title={<>Engineering with <span className="text-primary-500">Purpose</span> &amp; Precision</>}
+          subtitle="The bridge between clean code architecture, intuitive product design, and continuous technical evolution."
+        />
 
         {/* 2-Column Responsive Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">

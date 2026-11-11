@@ -68,18 +68,16 @@ export default function BlogSection() {
   return (
     <section 
       id="blog" 
-      className="py-24 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
+      className="py-12 md:py-16 bg-white dark:bg-[#07090f] text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
         
         {/* Section Heading */}
-        <div className="mb-14 text-center">
-          <SectionHeading
-            eyebrow="Technical Writing"
-            title={<>Thoughts on <span className="text-primary-500">Architecture</span> &amp; AI</>}
-            subtitle="Articles and insights directly fetched from Contentful."
-          />
-        </div>
+        <SectionHeading
+          eyebrow="Technical Writing"
+          title={<>Thoughts on <span className="text-primary-500">Architecture</span> &amp; AI</>}
+          subtitle="Articles and insights directly fetched from Contentful."
+        />
 
         {/* Loading skeleton */}
         {loading && (

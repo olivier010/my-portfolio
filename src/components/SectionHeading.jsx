@@ -2,7 +2,7 @@ import React from 'react';
 
 const SectionHeading = ({ eyebrow, title, subtitle, id }) => {
   return (
-    <div id={id} className="max-w-3xl mx-auto text-center mb-10">
+    <div id={id} className="max-w-3xl mx-auto text-center mb-8 md:mb-10">
       {eyebrow && (
         <p className="tracking-[0.35em] text-sm font-semibold uppercase text-blue-600 dark:text-violet-300 mb-4">
           {eyebrow}
